@@ -1,24 +1,21 @@
 # Cleon
 
-`Cleon` a set of basic building blocks for building clean systems. If you are familiar with The Clean Architecture, you'll catch everything at a glance (entities, services, gateways, input ports, presenters). Just my `42` toward software construction and architecture questions :)
+`Cleon` a set of basic classes for building clean systems. If you are familiar with `The Clean Architecture`, you'll catch everything at a glance. If not I doubted it serves to you. Just entities, interactors (services there, gateways, input ports, presenters. Just my `42` toward software construction and architecture questions :)
 
 For demonstration purpose I also created demo [Users](__TODO__) domain and [Users REST Service](__TODO__)  in the form of a Sinatra web application.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'cleon'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
+The `Cleon` code is just Plain Old Ruby Objects and until I've shaped it into the gem, I was just copying this bunch of files manually from one gem source code to another. I'm still thinking that it serves the best way. So, just install it as usual
 
     $ gem install cleon
+
+and then, clone it into your gem folder by executing the following code in gem root ( later I going to add console command)
+
+```ruby
+require 'cleon'
+Cleon::Services::CloneCleonSources.(Dir.pwd)
+```
 
 ## Usage
 
