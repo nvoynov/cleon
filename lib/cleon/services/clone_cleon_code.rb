@@ -5,7 +5,7 @@ module Cleon
 
     # The service copies Cleon source code into target gem sources,
     #   changing the original Cleon name to the target gem name.
-    class CloneCleonSources < Service
+    class CloneCleonCode < Service
 
       # The policy check if the agrument is valid gem folder name
       #   it must be a directory
@@ -49,6 +49,7 @@ module Cleon
               .gsub("module Cleon", "module #{gemname}")
               .gsub("Cleon.", "#{gemname}.")
               .gsub("Cleon::", "#{gemname}::")
+              .gsub("def_delegator :Cleon", "def_delegator :#{gemname}")
             target = File.join(@path_to_clone, source)
             target.gsub!("cleon/", "#{gemfldr}/")
 

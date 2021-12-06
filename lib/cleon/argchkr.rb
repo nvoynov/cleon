@@ -35,6 +35,10 @@ module Cleon
     #    str = String50.chk!("abcd", "user_name")
     #    # =>  ArgumentError: :user_name must be String[5, 50]
     class Policy
+      # Creates policy class
+      # @param aname [String] general name of the cheking argument
+      # @param ameesage [String] the template of error message
+      # @return [Cleon::ArgChkr::Policy]
       def self.new(aname, amessage, block)
         Class.new do
           define_singleton_method "valid?" do |value|

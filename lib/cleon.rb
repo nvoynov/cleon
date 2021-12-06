@@ -16,10 +16,9 @@ module Cleon
     end
 
     # Clone source code to another gem
-    def spawn_clone(gem_folder)
-      # ensure that gem_folder is the folder of a gem
-      # extract target gem name
-      # clone lib folder to lib folder of the target gem, changing name
+    # @param path [String] the root folder of the gem to copy
+    def clone_cleon_code(path = Dir.pwd)
+      Cleon::Services::CloneCleonCode.(path)
     end
 
     CleonGateway = Cleon::ArgChkr::Policy.new(

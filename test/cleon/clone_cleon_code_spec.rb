@@ -1,7 +1,7 @@
 require_relative "../spec_helper"
 include Cleon::Services
 
-describe CloneCleonSources do
+describe CloneCleonCode do
 
   def inside_sandbox
     Dir.mktmpdir(['cleon']) do |dir|
@@ -27,7 +27,7 @@ describe CloneCleonSources do
     it 'must raise ArgumentError for wrong :path_to_clone' do
       inside_fake_gem do
         path = File.join(Dir.pwd, 'unknown')
-        _( ->{ CloneCleonSources.(path) } ).must_raise ArgumentError
+        _( ->{ CloneCleonCode.(path) } ).must_raise ArgumentError
       end
     end
 
@@ -35,7 +35,7 @@ describe CloneCleonSources do
       inside_fake_gem do
         path = File.join(Dir.pwd, 'unknown')
         Dir.mkdir(path)
-        _( ->{ CloneCleonSources.(path) } ).must_raise ArgumentError
+        _( ->{ CloneCleonCode.(path) } ).must_raise ArgumentError
       end
     end
 
@@ -44,18 +44,18 @@ describe CloneCleonSources do
         path = File.join(Dir.pwd, 'few-words-gem')
         Dir.mkdir(path)
         File.write(File.join(path, 'few-words-gem.gemspec'), '')
-        _( ->{ CloneCleonSources.(path) } ).must_raise Cleon::Error
+        _( ->{ CloneCleonCode.(path) } ).must_raise Cleon::Error
       end
     end
 
     it 'must clone Cleon sources to :path_to_clone' do
       inside_fake_gem do
-        CloneCleonSources.('cleon_clone')
+        CloneCleonCode.('cleon_clone')
         cleon_sources = Dir.chdir(Cleon.root) { Dir.glob('lib/**/*.rb') }
         cleon_sources.each do |source|
           # ! special case to ignore
           next if source =~ /clone_cleon_sources.rb$/
-          
+
           if source =~ /cleon.rb$/
             target = File.join("cleon_clone", "lib", "cleon_clone.rb")
             _(File.exist?(target)).must_equal true
