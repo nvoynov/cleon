@@ -1,6 +1,6 @@
 # Cleon
 
-`Cleon` a set of basic classes for building clean systems. If you are familiar with `The Clean Architecture`, you'll catch everything at a glance. If not I doubted it serves to you. Just entities, interactors (services there, gateways, input ports, presenters. Just my `42` toward software construction and architecture questions :)
+`Cleon` a set of basic classes for building clean systems. If you are familiar with `The Clean Architecture`, you'll catch everything at a glance. If not I doubted it serves to you. Just entities, interactors (services there), gateways, input ports, presenters. Just my `42` toward software construction and architecture questions :)
 
 For demonstration purpose I also created demo [Users](__TODO__) domain and [Users REST Service](__TODO__)  in the form of a Sinatra web application.
 
