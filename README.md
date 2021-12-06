@@ -10,16 +10,16 @@ The `Cleon` code is just Plain Old Ruby Objects and until I've shaped it into th
 
     $ gem install cleon
 
-and then, clone it into your gem folder by executing the following code in gem root ( later I going to add console command)
+## Usage
+
+Once you have started with a new gem, you can add Cleon code to the gem by executing the following code in the gem root
 
 ```ruby
 require 'cleon'
-Cleon::Services::CloneCleonSources.(Dir.pwd)
+Cleon.clone_cleon_code
 ```
 
-## Usage
-
-TODO: Write usage instructions here
+Perhaps I will add some kind of console script later, but at the moment the code above serves just right.
 
 ## Story
 

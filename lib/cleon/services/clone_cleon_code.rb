@@ -42,7 +42,7 @@ module Cleon
         Dir.chdir(Cleon.root) do
           Dir.glob('lib/**/*.rb').each do |source|
             # skip clone_cleon_sources.rb
-            next if source =~ /clone_cleon_sources.rb$/
+            next if source =~ /clone_cleon_code.rb$/
 
             source_content = File.read(source)
             target_content = source_content
@@ -64,7 +64,7 @@ module Cleon
             # special case for services.rb to remove this file require
             if source =~ /services.rb$/
               target_content.gsub!(
-                "require_relative \"services/clone_cleon_sources\"", '')
+                "require_relative \"services/clone_cleon_code\"", '')
             end
             File.write(target, target_content)
           end
