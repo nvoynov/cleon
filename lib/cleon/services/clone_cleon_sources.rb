@@ -41,8 +41,9 @@ module Cleon
         # clone Cleon content
         Dir.chdir(Cleon.root) do
           Dir.glob('lib/**/*.rb').each do |source|
-            # source "lib/cleon/services/spawn_clone.rb"
-            # target "lib/gemname/services/spawn_clone.rb"
+            # skip clone_cleon_sources.rb
+            next if source =~ /clone_cleon_sources.rb$/
+
             source_content = File.read(source)
             target_content = source_content
               .gsub("module Cleon", "module #{gemname}")
@@ -50,12 +51,19 @@ module Cleon
               .gsub("Cleon::", "#{gemname}::")
             target = File.join(@path_to_clone, source)
             target.gsub!("cleon/", "#{gemfldr}/")
+
             # special case for <main_gem>.rb
             if source =~ /cleon.rb$/
               target.gsub!(/cleon.rb$/, "#{gemfldr}.rb")
               target_content.gsub!(
                 "require_relative \"cleon/",
                 "require_relative \"#{gemfldr}/")
+            end
+
+            # special case for services.rb to remove this file require
+            if source =~ /services.rb$/
+              target_content.gsub!(
+                "require_relative \"services/clone_cleon_sources\"", '')
             end
             File.write(target, target_content)
           end

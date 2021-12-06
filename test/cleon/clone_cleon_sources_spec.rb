@@ -53,6 +53,9 @@ describe CloneCleonSources do
         CloneCleonSources.('cleon_clone')
         cleon_sources = Dir.chdir(Cleon.root) { Dir.glob('lib/**/*.rb') }
         cleon_sources.each do |source|
+          # ! special case to ignore
+          next if source =~ /clone_cleon_sources.rb$/
+          
           if source =~ /cleon.rb$/
             target = File.join("cleon_clone", "lib", "cleon_clone.rb")
             _(File.exist?(target)).must_equal true
