@@ -47,6 +47,7 @@ module Cleon
             target_content = source_content
               .gsub("module Cleon", "module #{gemname}")
               .gsub("Cleon.", "#{gemname}.")
+              .gsub("Cleon::", "#{gemname}::")
             target = File.join(@path_to_clone, source)
             target.gsub!("cleon/", "#{gemfldr}/")
             # special case for <main_gem>.rb
