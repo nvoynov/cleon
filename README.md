@@ -4,6 +4,8 @@
 
 For demonstration purpose I also created demo [Users](__TODO__) domain and [Users REST Service](__TODO__)  in the form of a Sinatra web application.
 
+Once you'll become bothered by the cleanliness of your apps, just stop mingling business logic, frameworks, drivers; inspect those gems above and give it a try.
+
 ## Installation
 
 The `Cleon` code is just Plain Old Ruby Objects and until I've shaped it into the gem, I was just copying this bunch of files manually from one gem source code to another. I'm still thinking that it serves the best way. So, just install it as usual
@@ -18,6 +20,10 @@ Once you have started with a new gem, you can add Cleon code to the gem by execu
 require 'cleon'
 Cleon.clone_cleon_code
 ```
+
+or run the code in your console
+
+    $ ruby -e 'require "cleon"; Cleon.clone_cleon_code
 
 Perhaps I will add some kind of console command later, but at the moment the script above serves just right.
 

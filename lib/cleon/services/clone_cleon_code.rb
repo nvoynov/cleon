@@ -24,6 +24,7 @@ module Cleon
         @path_to_clone = File.expand_path(path_to_clone)
       end
 
+      # TODO: get rid of 'cleon' magic strings
       def call
         gemfile = Dir.chdir(@path_to_clone) { Dir.glob('*.gemspec').first }
         raise Cleon::Error.new("Few::Words::Gem are not supported"

@@ -15,6 +15,10 @@ module Cleon
       File.dirname __dir__
     end
 
+    def error!(message)
+      raise Error.new(message)
+    end
+
     # Clone source code to another gem
     # @param path [String] the root folder of the gem to copy
     def clone_cleon_code(path = Dir.pwd)
