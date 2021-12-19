@@ -22,7 +22,7 @@ The `Cleon` code is just Plain Old Ruby Objects and until I've shaped it into th
 
 Once you have started with a new gem that you want to be clean, just run the code in your console
 
-    $ ruby -e 'require "cleon"; Cleon.clone_cleon_code
+    $ ruby -e 'require "cleon"; Cleon.clone_cleon_code'
 
 Perhaps I will add some kind of console command later, but at the moment the script above serves just right.
 
