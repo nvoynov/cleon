@@ -29,8 +29,6 @@ Perhaps I will add some kind of console command later, but at the moment the scr
 
 ## Story
 
-Suddenly, after a decade of practicing business analysis in the software construction area, I've caught a surge to look deeper into modern "development" matters. The main points of curiosity are microservices, REST, event sourcing, and message broker stuff.
-
 A few last weeks I was goofing around, some reading, encapsulating domain business logic in separate gems. Finally, I caught myself copying and polishing basic classes from one project to another and that is why I created the gem.
 
 I had seen recently "The Foundation" series and chose the name taken after Cleon, because of his boring perpetuated constancy.

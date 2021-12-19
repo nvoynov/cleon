@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 require_relative "cleon/version"
+require_relative "cleon/argchkr"
 require_relative "cleon/entities"
 require_relative "cleon/services"
 require_relative "cleon/gateways"
-require_relative "cleon/argchkr"
 
 module Cleon
   class Error < StandardError; end
 
+  # TODO: prepare clean CleonClone module instead of this
+  #       without those root, file, base, clone_cleon_code
   class << self
 
     def root
       File.dirname __dir__
+    end
+
+    def base
+      File.basename(__FILE__, ".rb")
     end
 
     def error!(message)

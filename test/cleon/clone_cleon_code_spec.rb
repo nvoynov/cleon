@@ -18,52 +18,42 @@ describe CloneCleonCode do
         File.write 'cleon_clone.gemspec', ''
         File.write File.join('lib', 'cleon_clone.rb'), ''
       end
-      # puts ">> inside_fake_gem (#{Dir.pwd})\n #{Dir.glob('**/*')}"
       yield
     end
   end
 
   describe '#call' do
-    it 'must raise ArgumentError for wrong :path_to_clone' do
+    let(:wrong) { 'wrong' }
+
+    it 'must raise Cleon::Error for wrong :path' do
       inside_fake_gem do
-        path = File.join(Dir.pwd, 'unknown')
-        _( ->{ CloneCleonCode.(path) } ).must_raise ArgumentError
+        err = assert_raises(Cleon::Error) { CloneCleonCode.(wrong) }
+        assert_match %r{No such directory}, err.message
       end
     end
 
-    it 'must raise ArgumentError when .gemspec not found' do
+    it 'must raise Cleon::Error when .gemspec not found' do
       inside_fake_gem do
-        path = File.join(Dir.pwd, 'unknown')
-        Dir.mkdir(path)
-        _( ->{ CloneCleonCode.(path) } ).must_raise ArgumentError
+        Dir.mkdir(wrong)
+        err = assert_raises(Cleon::Error) { CloneCleonCode.(wrong) }
+        assert_match %r{Not gem directory}, err.message
       end
     end
 
-    it 'must raise Cleon::Error when .gemspec has -' do
-      inside_fake_gem do
-        path = File.join(Dir.pwd, 'few-words-gem')
-        Dir.mkdir(path)
-        File.write(File.join(path, 'few-words-gem.gemspec'), '')
-        _( ->{ CloneCleonCode.(path) } ).must_raise Cleon::Error
-      end
-    end
-
-    it 'must clone Cleon sources to :path_to_clone' do
+    it 'must clone Cleon sources to :path' do
       inside_fake_gem do
         CloneCleonCode.('cleon_clone')
         cleon_sources = Dir.chdir(Cleon.root) { Dir.glob('lib/**/*.rb') }
+        cleon_sources.delete_if{|s| s =~ /clone_cleon_code.rb$/}
         cleon_sources.each do |source|
-          # ! special case to ignore
-          next if source =~ /clone_cleon_code.rb$/
-
           if source =~ /cleon.rb$/
             target = File.join("cleon_clone", "lib", "cleon_clone.rb")
-            _(File.exist?(target)).must_equal true
-            _(File.read(target)).must_match(/module CleonClone/)
+            assert File.exist?(target)
+            assert_match %r{module CleonClone}, File.read(target)
           else
             target = File.join("cleon_clone", source)
             target.gsub!('cleon/', 'cleon_clone/')
-            _(File.exist?(target)).must_equal true
+            assert File.exist?(target)
           end
         end
       end

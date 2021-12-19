@@ -1,3 +1,4 @@
+require 'fileutils'
 require_relative "service"
 
 module Cleon
@@ -7,68 +8,51 @@ module Cleon
     #   changing the original Cleon name to the target gem name.
     class CloneCleonCode < Service
 
-      # The policy check if the agrument is valid gem folder name
-      #   it must be a directory
-      #   it must have *.gemspec file inside
-      PathToClone = Policy.new(
-        "clone_path", ":%s must be gem foder",
-        ->(path) {
-          return false unless Dir.exist?(path)
-          return false unless Dir.chdir(path) { Dir.glob('*.gemspec').first }
-          true
-        }
-      )
+      def initialize(clone_to = Dir.pwd)
+        @path = File.expand_path(clone_to)
+        Cleon.error!("No such directory: #{@path}") unless Dir.exist? @path
 
-      def initialize(path_to_clone)
-        PathToClone.chk!(path_to_clone)
-        @path_to_clone = File.expand_path(path_to_clone)
+        @spec = Dir.chdir(@path) { Dir.glob('*.gemspec').first }
+        Cleon.error!("Not gem directory: #{@path}") unless @spec
+        @clonelib = File.join(@path, 'lib')
+
+        @base = @spec.sub('.gemspec', '').split(?-).first
+        @clonesrc = File.join(@clonelib, "#{@base}.rb")
+        @unit = @base.split(?_).map(&:capitalize).join
       end
 
-      # TODO: get rid of 'cleon' magic strings
       def call
-        gemfile = Dir.chdir(@path_to_clone) { Dir.glob('*.gemspec').first }
-        raise Cleon::Error.new("Few::Words::Gem are not supported"
-        ) if gemfile.include?(?-)
-        gemfldr = gemfile.gsub(".gemspec", "")
-        gemname = gemfile.gsub(".gemspec", "").split(?_).map(&:capitalize).join
-
-        # clone Cleon basic structure
-        Dir.chdir(File.join(@path_to_clone, "lib", gemfldr)) do
-          Dir.mkdir "entities" unless Dir.exist? "entities"
-          Dir.mkdir "services" unless Dir.exist? "services"
-          Dir.mkdir "gateways" unless Dir.exist? "gateways"
+        cleonlib = File.join(Cleon.root, 'lib')
+        clone_tt = File.read(File.join(cleonlib, 'clone.rb.tt'))
+        # TODO: patch content @clonesrc when it exist
+        if File.exist?(@clonesrc)
+          clonebase = File.basename(@clonesrc)
+          FileUtils.cp @clonesrc, "#{@clonesrc}~"
+          puts "Cleon created new #{clonebase} file"
+          puts "Find original file in #{clonebase}~"
         end
+        File.write(@clonesrc, clone_tt % {base: @base, clone: @unit})
+        Dir.chdir(File.join(@clonelib, @base)) {
+          %w(entities services gateways).each {|dir|
+            Dir.mkdir(dir) unless Dir.exist?(dir)
+          }
+        }
 
-        # clone Cleon content
-        Dir.chdir(Cleon.root) do
-          Dir.glob('lib/**/*.rb').each do |source|
-            # skip clone_cleon_sources.rb
-            next if source =~ /clone_cleon_code.rb$/
-
-            source_content = File.read(source)
-            target_content = source_content
-              .gsub("module Cleon", "module #{gemname}")
-              .gsub("Cleon.", "#{gemname}.")
-              .gsub("Cleon::", "#{gemname}::")
-              .gsub("def_delegator :Cleon", "def_delegator :#{gemname}")
-            target = File.join(@path_to_clone, source)
-            target.gsub!("cleon/", "#{gemfldr}/")
-
-            # special case for <main_gem>.rb
-            if source =~ /cleon.rb$/
-              target.gsub!(/cleon.rb$/, "#{gemfldr}.rb")
-              target_content.gsub!(
-                "require_relative \"cleon/",
-                "require_relative \"#{gemfldr}/")
-            end
-
-            # special case for services.rb to remove this file require
-            if source =~ /services.rb$/
-              target_content.gsub!(
-                "require_relative \"services/clone_cleon_code\"", '')
-            end
-            File.write(target, target_content)
+        what = Dir.chdir(cleonlib) { Dir.glob('**/*.rb') }
+        what.delete_if{|s| s =~ /(clone_cleon_code|cleon).rb$/}
+        what.each do |source|
+          content = File.read(File.join(cleonlib, source))
+          clone_content = content
+            .gsub("module #{Cleon.name}", "module #{@unit}")
+            .gsub("#{Cleon.name}.", "#{@unit}.")
+            .gsub("#{Cleon.name}::", "#{@unit}::")
+            .gsub("def_delegator :#{Cleon.name}", "def_delegator :#{@unit}")
+          target = File.join(@clonelib, source)
+          target.gsub!("#{Cleon.base}/", "#{@base}/")
+          if source =~ /services.rb$/
+            content.gsub!("require_relative \"services/clone_cleon_code\"", '')
           end
+          File.write(target, clone_content)
         end
       end
     end

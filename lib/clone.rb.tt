@@ -1,0 +1,27 @@
+require_relative '%{base}/version'
+require_relative '%{base}/argchkr'
+require_relative '%{base}/entities'
+require_relative '%{base}/services'
+require_relative '%{base}/gateways'
+
+module %{clone}
+  class Error < StandardError; end
+
+  class << self
+    def error!(message)
+      raise Error.new(message)
+    end
+
+    %{clone}Gateway = %{clone}::ArgChkr::Policy.new(
+      "gateway", ":%%s must be %{clone}::Gateways::Gateway",
+      Proc.new {|v| v.is_a? %{clone}::Gateways::Gateway})
+
+    def gateway
+      @gateway # ||= %{clone}::Gateways::Gateway.new
+    end
+
+    def gateway=(gateway)
+      @gateway = %{clone}Gateway.chk!(gateway)
+    end
+  end
+end
