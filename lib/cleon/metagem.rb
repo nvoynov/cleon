@@ -21,7 +21,7 @@ module Cleon
     end
 
     def base
-      @base ||= File.basename(gemspec, '.gemspec')
+      @base ||= File.basename(gemspec, '.gemspec').split(?-).first
     end
 
     def base_dir
