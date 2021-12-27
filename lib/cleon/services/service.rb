@@ -1,11 +1,11 @@
+require_relative '../arguards'
 require "forwardable"
-require_relative '../argchkr'
 
 module Cleon
   module Services
 
     class Service
-      include Cleon::ArgChkr
+      include Cleon::ArGuards
       extend Forwardable
       def_delegator :Cleon, :gateway
 

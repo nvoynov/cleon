@@ -1,0 +1,12 @@
+require_relative '../../spec_helper'
+include <%= @model.root_const %>::Services
+
+describe <%= @model.const %> do
+
+  describe '#call' do
+    it 'must do something' do
+      assert <%= @model.const %>.(<%= @model.keyword_arguments %>)
+    end
+  end
+
+end

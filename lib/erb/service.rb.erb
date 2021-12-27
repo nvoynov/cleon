@@ -1,0 +1,20 @@
+require_relative 'service'
+
+module <%= @model.root_const %>
+  module Services
+
+    class <%= @model.const %> < Service
+
+      def initialize(<%= @model.keyword_arguments %>)
+<% for param in @model.params -%>
+        @<%= param %> = <%= param %>
+<% end -%>
+      end
+
+      def call
+      end
+
+    end
+
+  end
+end

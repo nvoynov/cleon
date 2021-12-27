@@ -1,0 +1,21 @@
+require_relative 'entity'
+
+module <%= @model.root_const %>
+  module Entities
+
+    class <%= @model.const %> < Entity
+
+<% for param in @model.params -%>
+      attr_reader :<%= param %>
+<% end -%>
+
+      def initialize(<%= @model.keyword_arguments %>)
+<% for param in @model.params -%>
+        @<%= param %> = <%= param %>
+<% end -%>
+      end
+
+    end
+
+  end
+end

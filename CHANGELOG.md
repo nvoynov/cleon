@@ -1,8 +1,11 @@
 ## [Unreleased]
 
-TODO
+## [0.2.0] - 2021-12-27
 
-- (metaprogramming) add magic method to Cleon that will create class methods for all services by excluding of abstract Service. That way `CloneCleonCode.(**args)` will be added as `Cleon.clone_cleon_code(**args)`.
+- `ArgChkr` replaced by `ArGuard`
+- Added `EntityGenerator` with specs
+- Added `ServiceGenerator` with specs
+- Improved tests. Now pathed gem checks by ruby -e
 
 ## [0.1.1] - 2021-12-20
 

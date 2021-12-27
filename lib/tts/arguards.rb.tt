@@ -1,0 +1,8 @@
+require_relative 'arguard'
+
+module %{clone}
+  # Place here shared argument guards for the domain
+  module ArGuards
+
+  end
+end

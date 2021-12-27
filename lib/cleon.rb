@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 require_relative "cleon/version"
-require_relative "cleon/argchkr"
+require_relative "cleon/arguard"
+require_relative "cleon/arguards"
 require_relative "cleon/entities"
 require_relative "cleon/services"
 require_relative "cleon/gateways"
+require_relative "cleon/generator"
+require_relative "cleon/metagem"
+require_relative "cleon/model"
+require_relative "cleon/decor"
 
 module Cleon
   class Error < StandardError; end
@@ -31,8 +36,8 @@ module Cleon
       Cleon::Services::CloneCleonCode.(path)
     end
 
-    CleonGateway = Cleon::ArgChkr::Policy.new(
-      "gateway", ":%s must be Cleon::Gateways::Gateway",
+    GuardGateway = Cleon::ArGuard.new(
+      "gateway", "must be Cleon::Gateways::Gateway",
       Proc.new {|v| v.is_a? Cleon::Gateways::Gateway})
 
     def gateway
@@ -40,7 +45,7 @@ module Cleon
     end
 
     def gateway=(gateway)
-      @gateway = CleonGateway.chk!(gateway)
+      @gateway = GuardGateway.(gateway)
     end
   end
 end

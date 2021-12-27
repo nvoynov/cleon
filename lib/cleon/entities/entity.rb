@@ -1,10 +1,10 @@
-require_relative "../argchkr"
+require_relative "../arguards"
 
 module Cleon
   module Entities
 
     class Entity
-      include Cleon::ArgChkr
+      include Cleon::ArGuards
     end
 
   end
