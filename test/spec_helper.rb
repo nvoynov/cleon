@@ -38,8 +38,8 @@ class SpecGem
         "lib/#{root}/entities",
         "test",
         "test/#{root}",
-        "test/services",
-        "test/entities"
+        "test/#{root}/services",
+        "test/#{root}/entities"
       ]
 
       files = [

@@ -3,10 +3,9 @@
 ## [0.3.0] - 2021-12-27
 
 - Added `Cleon::Services::CloneThing` service for generating services and entities. The service generates source `.rb` file and requires the source inside `entities.rb` or `services.rb` respectively; it also creates `_spec.rb`.
-- Added helpers `Cleon.clone_cleon`, `Cleon.clone_entity`, `Cleon.clone_service`
-- Added Thor script with those helpers - just copy and enjoy.
+- Added helpers `Cleon.copy_thor`,`Cleon.clone_cleon`, `Cleon.clone_entity`, `Cleon.clone_service`.
 
-Templates  for all those generators mentioned can be found in `lib/erb` directory. It also relies on the following gem structure:
+Templates for all those generators mentioned can be found in `lib/erb` directory. It also relies on the following gem structure:
 
 - lib
 - lib/{base}

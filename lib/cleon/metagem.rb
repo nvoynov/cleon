@@ -16,6 +16,18 @@ module Cleon
       Dir.exist?(lib)
     end
 
+    def cleon_gem?
+      return false unless gem?
+      dirs = [
+        "lib/#{base}",
+        "lib/#{base}/services",
+        "lib/#{base}/entities",
+        "test/#{base}/services",
+        "test/#{base}/entities"
+      ]
+      dirs.all?{|dir| Dir.exist?(dir)}
+    end
+
     def gemspec
       @gemspec ||= Dir.chdir(@path) { Dir.glob('*.gemspec').first }
     end
@@ -26,6 +38,10 @@ module Cleon
 
     def base_dir
       @bdir ||= File.join(lib, base)
+    end
+
+    def test_dir
+      @tdir ||= File.join(@path, 'test')
     end
 
     def lib

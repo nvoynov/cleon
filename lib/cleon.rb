@@ -14,24 +14,42 @@ require_relative "cleon/decor"
 module Cleon
   class Error < StandardError; end
 
-  # TODO: prepare clean CleonClone module instead of this
-  #       without those root, file, base, clone_cleon_code
   class << self
+
+    def copy_thor(path = Dir.pwd)
+      error!(ERR_GEM_REQUIRED) unless gem?(path)
+      thor = File.join(Cleon.root, 'cleon.thor')
+      FileUtils.cp(thor, path)
+    end
 
     # Helper for CloneCleon.() (see Cleon::Services::CloneCleon.new)
     def clone_cleon(path = Dir.pwd)
+      error!(ERR_GEM_REQUIRED) unless gem?(path)
       Cleon::Services::CloneCleon.(path)
     end
 
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
     def clone_entity(thing, path = Dir.pwd)
+      error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
       Cleon::Services::CloneThing.(type: 'entity', thing: thing, path: path)
     end
 
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
     def clone_service(thing, path = Dir.pwd)
+      error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
       Cleon::Services::CloneThing.(type: 'service', thing: thing, path: path)
     end
+
+    def gem?(path)
+      MetaGem.new(path).gem?
+    end
+
+    def cleon_gem?(path)
+      MetaGem.new(path).cleon_gem?
+    end
+
+    ERR_GEM_REQUIRED = 'This command only works inside a gem'
+    ERR_CLEON_REQUIRED = 'This command only works inside a "cleoned" gem'
 
     def root
       File.dirname __dir__

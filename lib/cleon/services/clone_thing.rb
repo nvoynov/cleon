@@ -20,6 +20,7 @@ module Cleon
       end
 
       def call
+        log = []
         settings = SETTINGS[@type.to_sym]
 
         # create thing
@@ -29,6 +30,8 @@ module Cleon
         req = settings[:req_to] % {base: @meta.base}
         Generator.(@model, path: @path, erb: erb,
           place_to: put, require_to: req)
+        log << "'#{put}' created"
+        log << "'#{put}' required in '#{req}'"
 
         # create the thing's spec
         src = File.join(Cleon.root, settings[:spec][:erb_tt])
@@ -36,6 +39,9 @@ module Cleon
         put = settings[:spec][:put_to] % {base: @meta.base, name: @model.spec}
 
         Generator.(@model, path: @path, erb: erb, place_to: put)
+        log << "'#{put}' created"
+
+        log
       end
 
       SETTINGS = {
@@ -45,7 +51,7 @@ module Cleon
           req_to: 'lib/%{base}/services.rb',
           spec: {
             erb_tt: 'lib/erb/service_spec.rb.erb',
-            put_to: 'test/services/%{name}'
+            put_to: 'test/%{base}/services/%{name}'
           }
         },
 
@@ -55,7 +61,7 @@ module Cleon
           req_to: 'lib/%{base}/entities.rb',
           spec: {
             erb_tt: 'lib/erb/entity_spec.rb.erb',
-            put_to: 'test/entities/%{name}'
+            put_to: 'test/%{base}/entities/%{name}'
           }
         }
       }

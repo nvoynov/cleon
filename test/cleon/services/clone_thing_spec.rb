@@ -10,9 +10,11 @@ describe CloneThing do
   module SharedSpec
     extend Minitest::Spec::DSL
 
+    # TODO: it must return what it created?
     it 'must create thing' do
-      SpecGem.(root) do        
-        CloneThing.(type: type, thing: thing, path: Dir.pwd)
+      SpecGem.(root) do
+        log = CloneThing.(type: type, thing: thing, path: Dir.pwd)
+        assert_equal 3, log.size
         assert File.exist?(src)
         assert File.exist?(spec)
         last_req = File.read(inc).split(?\n).last
@@ -27,7 +29,7 @@ describe CloneThing do
     let(:type) { :service }
     let(:src)  { "lib/#{root}/services/#{decor.source}" }
     let(:inc)  { "lib/#{root}/services.rb" }
-    let(:spec) { "test/services/#{decor.spec}" }
+    let(:spec) { "test/#{root}/services/#{decor.spec}" }
     let(:req)  { "require_relative 'services/#{decor.name}'" }
   end
 
@@ -37,7 +39,7 @@ describe CloneThing do
     let(:type) { :entity }
     let(:src)  { "lib/#{root}/entities/#{decor.source}" }
     let(:inc)  { "lib/#{root}/entities.rb" }
-    let(:spec) { "test/entities/#{decor.spec}" }
+    let(:spec) { "test/#{root}/entities/#{decor.spec}" }
     let(:req)  { "require_relative 'entities/#{decor.name}'" }
   end
 end

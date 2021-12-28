@@ -33,6 +33,16 @@ module Cleon
             puts "'#{dir}' directory created"
           end
         end
+
+        dirs = [@meta.base, "#{@meta.base}/services", "#{@meta.base}/entities"]
+        Dir.chdir(@meta.test_dir) do
+          dirs.each do |dir|
+            next if Dir.exist?(dir)
+            Dir.mkdir(dir)
+            puts "'#{dir}' directory created"
+          end
+        end
+
       end
 
       def generate_sources
