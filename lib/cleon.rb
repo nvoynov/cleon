@@ -18,7 +18,7 @@ module Cleon
 
     def copy_thor(path = Dir.pwd)
       error!(ERR_GEM_REQUIRED) unless gem?(path)
-      thor = File.join(Cleon.root, 'cleon.thor')
+      thor = File.join(Cleon.root, 'lib/cleon.thor')
       FileUtils.cp(thor, path)
     end
 

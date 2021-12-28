@@ -36,6 +36,11 @@ module Cleon
 
         dirs = [@meta.base, "#{@meta.base}/services", "#{@meta.base}/entities"]
         Dir.chdir(@meta.test_dir) do
+          puts "debug --------"
+          pp @meta.base
+          pp @meta.test_dir
+          pp dirs
+          pp Dir.glob('**/*')
           dirs.each do |dir|
             next if Dir.exist?(dir)
             Dir.mkdir(dir)

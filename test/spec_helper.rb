@@ -20,7 +20,7 @@ end
 class SpecClone
   def self.call(root)
     SpecTmp.() do
-      dirs = ['lib', "lib/#{root}"]
+      dirs = ['lib', "lib/#{root}", 'test']
       files = ["#{root}.gemspec", "lib/#{root}.rb", "lib/#{root}/version.rb"]
       dirs.each{|dir| Dir.mkdir(dir) }
       files.each{|src| File.write(src, '') }
