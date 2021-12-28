@@ -18,10 +18,10 @@ end
 
 # just inside gem candidate to clone
 class SpecClone
-  def self.call(gem)
+  def self.call(root)
     SpecTmp.() do
-      dirs = ['lib', "lib/#{gem}"]
-      files = ["#{gem}.gemspec", "lib/#{gem}.rb", "lib/#{gem}/version.rb"]
+      dirs = ['lib', "lib/#{root}"]
+      files = ["#{root}.gemspec", "lib/#{root}.rb", "lib/#{root}/version.rb"]
       dirs.each{|dir| Dir.mkdir(dir) }
       files.each{|src| File.write(src, '') }
       yield
@@ -30,27 +30,29 @@ class SpecClone
 end
 
 class SpecGem
-  def self.call(gem)
+  def self.call(root, print_glob = false)
     SpecTmp.() do
       dirs = ['lib',
-        "lib/#{gem}",
-        "lib/#{gem}/services",
-        "lib/#{gem}/entities",
+        "lib/#{root}",
+        "lib/#{root}/services",
+        "lib/#{root}/entities",
         "test",
-        "test/#{gem}",
-        "test/#{gem}/services",
-        "test/#{gem}/entities"
+        "test/#{root}",
+        "test/services",
+        "test/entities"
       ]
 
       files = [
-        "#{gem}.gemspec",
-        "lib/#{gem}.rb",
-        "lib/#{gem}/entities.rb",
-        "lib/#{gem}/services.rb"
+        "#{root}.gemspec",
+        "lib/#{root}.rb",
+        "lib/#{root}/entities.rb",
+        "lib/#{root}/services.rb"
       ]
 
       dirs.each{|dir| Dir.mkdir(dir) }
       files.each{|src| File.write(src, '')}
+
+      pp Dir.glob('**/*') if print_glob
 
       yield
     end

@@ -13,14 +13,27 @@ module Cleon
 
     # @return ruby const from @name
     def const
-      name.downcase.strip.gsub(/\s{1,}/, '_')
-        .split(?_).map(&:capitalize).join
+      constanize(name)
     end
 
     def root_const
-      return '' if root.empty?
-      root.downcase.strip.gsub(/\s{1,}/, '_')
-        .split(?_).map(&:capitalize).join
+      constanize(root)
+    end
+
+    def source
+      "#{sanitize(name)}.rb"
+    end
+
+    def spec
+      "#{sanitize(name)}_spec.rb"
+    end
+
+    def sanitize(str)
+      str.downcase.strip.gsub(/\s{1,}/, '_')
+    end
+
+    def constanize(str)
+      sanitize(str).split(?_).map(&:capitalize).join
     end
 
     # @return [String] :params presentation as method arguments
@@ -35,12 +48,6 @@ module Cleon
 
     def attributes
       params.map{|a| "attr_reader :#{a}"}.join(?\n) + "\n"
-    end
-
-    def source_file(suffix = '')
-      src = name.downcase.strip.gsub(/\s{1,}/, '_')
-      src = "#{src}_#{suffix}" unless suffix.empty?
-      src + '.rb'
     end
   end
 

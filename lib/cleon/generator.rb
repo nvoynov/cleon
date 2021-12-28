@@ -19,7 +19,7 @@ module Cleon
     # @param path [String] output filename
     # @param place_to [String] output filename
     # @param require_to [String] file for adding require_relative
-    def initialize(model, erb:, path: Dir.pwd, place_to:, require_to: '')
+    def initialize(model, erb:, path:, place_to:, require_to: '')
       @model = model
       @erb = erb
       @path = path
@@ -33,15 +33,16 @@ module Cleon
 
       Dir.chdir(@path) do
         File.write(@place_to, body)
-
         return if @require_to.empty?
+
+        # TODO: too cumbersome
         require_as = @place_to.split(/\//).tap do |parts|
           other_parts = @require_to.split(/\//)
           parts.shift while parts[0] == other_parts.shift
         end.join(?/).sub(/.rb\z/, '')
 
-        content = File.read(@require_to)
-        File.write(@require_to, "#{content}\nrequire_relative '#{require_as}'")
+        include = File.read(@require_to)
+        File.write(@require_to, "#{include}\nrequire_relative '#{require_as}'")
       end
     end
 

@@ -18,22 +18,27 @@ module Cleon
   #       without those root, file, base, clone_cleon_code
   class << self
 
+    # Helper for CloneCleon.() (see Cleon::Services::CloneCleon.new)
+    def clone_cleon(path = Dir.pwd)
+      Cleon::Services::CloneCleon.(path)
+    end
+
+    # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
+    def clone_entity(thing, path = Dir.pwd)
+      Cleon::Services::CloneThing.(type: 'entity', thing: thing, path: path)
+    end
+
+    # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
+    def clone_service(thing, path = Dir.pwd)
+      Cleon::Services::CloneThing.(type: 'service', thing: thing, path: path)
+    end
+
     def root
       File.dirname __dir__
     end
 
-    def base
-      File.basename(__FILE__, ".rb")
-    end
-
     def error!(message)
       raise Error.new(message)
-    end
-
-    # Clone source code to another gem
-    # @param path [String] the root folder of the gem to copy
-    def clone_cleon_code(path = Dir.pwd)
-      Cleon::Services::CloneCleonCode.(path)
     end
 
     GuardGateway = Cleon::ArGuard.new(

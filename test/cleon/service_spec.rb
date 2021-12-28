@@ -13,7 +13,7 @@ describe Service do
   end
 
   it 'must provide gateway' do
-    _(SpecService.service()).must_respond_to :gateway
+    assert_respond_to SpecService.service, :gateway
   end
 
 end

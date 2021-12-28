@@ -1,10 +1,25 @@
 ## [Unreleased]
 
+## [0.3.0] - 2021-12-27
+
+- Added `Cleon::Services::CloneThing` service for generating services and entities. The service generates source `.rb` file and requires the source inside `entities.rb` or `services.rb` respectively; it also creates `_spec.rb`.
+- Added helpers `Cleon.clone_cleon`, `Cleon.clone_entity`, `Cleon.clone_service`
+- Added Thor script with those helpers - just copy and enjoy.
+
+Templates  for all those generators mentioned can be found in `lib/erb` directory. It also relies on the following gem structure:
+
+- lib
+- lib/{base}
+- lib/{base}/entities
+- lib/{base}/services
+- test
+- test/{base}
+- test/services
+- test/entities
+
 ## [0.2.0] - 2021-12-27
 
-- `ArgChkr` replaced by `ArGuard`
-- Added `EntityGenerator` with specs
-- Added `ServiceGenerator` with specs
+- The `ArgChkr` class replaced by `ArGuard` in accord to Dogen
 - Improved tests. Now pathed gem checks by ruby -e
 
 ## [0.1.1] - 2021-12-20

@@ -21,7 +21,7 @@ describe Generator do
     describe '#call(model, erb:, path: Dir.pwd)' do
       it 'must create source file' do
         SpecTmp.() do
-          Generator.(1, erb: erb, place_to: out)
+          Generator.(1, path: Dir.pwd, erb: erb, place_to: out)
           assert File.exist?(out)
           assert_equal '1', File.read(out)
 
@@ -35,7 +35,7 @@ describe Generator do
       it 'must create source file and require created' do
         SpecTmp.() do
           File.write(req, required)
-          Generator.(1, erb: erb, place_to: out, require_to: req)
+          Generator.(1, path: Dir.pwd, erb: erb, place_to: out, require_to: req)
           assert File.exist?(req)
           assert_equal new_required, File.read(req) + "\n"
 
