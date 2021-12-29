@@ -50,8 +50,6 @@ Cleon: clone myself...
 Cleon was successfully cloned
 ```    
 
-It creates clones all necessary files
-
 ### Creating a new entity
 
 Once you need to create a new entity you can run:
