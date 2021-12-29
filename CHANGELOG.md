@@ -14,8 +14,8 @@ Templates for all those generators mentioned can be found in `lib/erb` directory
 - lib/{base}/services
 - test
 - test/{base}
-- test/services
-- test/entities
+- test/{base}/services
+- test/{base}/entities
 
 ## [0.2.0] - 2021-12-27
 

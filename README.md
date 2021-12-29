@@ -26,6 +26,32 @@ Once you have started with a new gem, just run the code in your console to creat
 
     $ cleon clone
 
+One of test of cloning shows output that follows. The root source file of the gem `lib/temp.rb` was replaced during cloning, but original copy was saved in `lib/temp.rb~`
+
+```
+$ cleon clone
+Cleon: clone myself...
+  created lib/temp/services
+  created lib/temp/entities
+  created lib/temp/gateways
+  created test/temp
+  created test/temp/services
+  created test/temp/entities
+  created lib/temp/arguard.rb
+  created lib/temp/arguards.rb
+  created lib/temp.rb~
+  created lib/temp.rb
+  created lib/temp/entities.rb
+  created lib/temp/gateways.rb
+  created lib/temp/services.rb
+  created lib/temp/services/service.rb
+  created lib/temp/entities/entity.rb
+  created lib/temp/gateways/gateway.rb
+Cleon was successfully cloned
+```    
+
+It creates clones all necessary files
+
 ### Creating a new entity
 
 Once you need to create a new entity you can run:

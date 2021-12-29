@@ -21,18 +21,19 @@ module Cleon
         create_structure
         generate_sources
         clone_sources
+        @log
       end
 
       private
 
       def create_structure
         dirs = [
-          "#{@meta.path}/lib/#{@meta.base}/services",
-          "#{@meta.path}/lib/#{@meta.base}/entities",
-          "#{@meta.path}/lib/#{@meta.base}/gateways",
-          "#{@meta.path}/test/#{@meta.base}",
-          "#{@meta.path}/test/#{@meta.base}/services",
-          "#{@meta.path}/test/#{@meta.base}/entities",
+          "lib/#{@meta.base}/services",
+          "lib/#{@meta.base}/entities",
+          "lib/#{@meta.base}/gateways",
+          "test/#{@meta.base}",
+          "test/#{@meta.base}/services",
+          "test/#{@meta.base}/entities",
         ]
 
         Dir.chdir(@meta.path) do
@@ -60,6 +61,7 @@ module Cleon
             body = File.read(template) % {base: @meta.base, clone: @meta.const}
             dest = target.call(src)
             log_file_name = "lib/#{@meta.base}/" + src.sub(/\.tt\z/, '')
+            log_file_name = "lib/#{@meta.base}.rb" if log_file_name =~ /clone.rb/
             if File.exist?(dest)
               FileUtils.cp dest, "#{dest}~"
               @log << "#{log_file_name}~"
@@ -79,7 +81,7 @@ module Cleon
             orig = File.read(path)
             body = orig.gsub(Cleon.name, @meta.const)
             File.write(src, body)
-            @log << src
+            @log << "lib/#{@meta.base}/#{src}"
           end
         end
       end

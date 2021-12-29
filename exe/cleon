@@ -6,6 +6,7 @@ require "cleon"
 BANNER = <<~EOF
   -= Cleon =- is a code skeleton of services and entities
   For more information visit https://github.com/nvoynov/cleon
+  version: #{Cleon::VERSION}
 
   To clone cleon skeleton inside your gem:
   1. add `gem "cleon"` to your Gemfile

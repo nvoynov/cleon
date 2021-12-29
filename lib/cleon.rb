@@ -23,7 +23,7 @@ module Cleon
       puts "Cleon: clone myself..."
       log = Cleon::Services::CloneCleon.(path)
       print_log(log)
-      puts "Cleon was sucessfully cloned"
+      puts "Cleon was successfully cloned"
     end
 
     def print_log(log)
