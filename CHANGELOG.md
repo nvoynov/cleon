@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+- exe with `cleon init` command
+- README
+- version
+- release v0.3
+
 ## [0.3.0] - 2021-12-27
 
 - Added `Cleon::Services::CloneThing` service for generating services and entities. The service generates source `.rb` file and requires the source inside `entities.rb` or `services.rb` respectively; it also creates `_spec.rb`.

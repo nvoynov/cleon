@@ -24,30 +24,21 @@ module Cleon
 
       private
 
+      def create_directories(base, dirs)
+        Dir.chdir(base) do
+          dirs.each do |dir|
+            next if Dir.exist?(dir)
+            Dir.mkdir(dir)
+            puts "'#{dir}' directory created"
+          end
+        end
+      end
+
       def create_structure
-        dirs = %w(entities services gateways)
-        Dir.chdir(@meta.base_dir) do
-          dirs.each do |dir|
-            next if Dir.exist?(dir)
-            Dir.mkdir(dir)
-            puts "'#{dir}' directory created"
-          end
-        end
-
-        dirs = [@meta.base, "#{@meta.base}/services", "#{@meta.base}/entities"]
-        Dir.chdir(@meta.test_dir) do
-          puts "debug --------"
-          pp @meta.base
-          pp @meta.test_dir
-          pp dirs
-          pp Dir.glob('**/*')
-          dirs.each do |dir|
-            next if Dir.exist?(dir)
-            Dir.mkdir(dir)
-            puts "'#{dir}' directory created"
-          end
-        end
-
+        base_dirs = %w(entities services gateways)
+        test_dirs = [@meta.base, "#{@meta.base}/services", "#{@meta.base}/entities"]
+        create_directories(@meta.base_dir, base_dirs)
+        create_directories(@meta.test_dir, test_dirs)
       end
 
       def generate_sources

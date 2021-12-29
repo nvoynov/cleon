@@ -16,16 +16,13 @@ module Cleon
 
   class << self
 
-    def copy_thor(path = Dir.pwd)
-      error!(ERR_GEM_REQUIRED) unless gem?(path)
-      thor = File.join(Cleon.root, 'lib/cleon.thor')
-      FileUtils.cp(thor, path)
-    end
-
     # Helper for CloneCleon.() (see Cleon::Services::CloneCleon.new)
     def clone_cleon(path = Dir.pwd)
       error!(ERR_GEM_REQUIRED) unless gem?(path)
+      error!(ERR_CLEON_CLONED) if cleon_gem?(path)
       Cleon::Services::CloneCleon.(path)
+      thor = File.join(Cleon.root, 'lib/cleon.thor')
+      FileUtils.cp(thor, path)
     end
 
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
@@ -50,6 +47,7 @@ module Cleon
 
     ERR_GEM_REQUIRED = 'This command only works inside a gem'
     ERR_CLEON_REQUIRED = 'This command only works inside a "cleoned" gem'
+    ERR_CLEON_CLONED = 'This gem is already "cleoned"'
 
     def root
       File.dirname __dir__
