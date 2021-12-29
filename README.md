@@ -89,6 +89,26 @@ Once you need to create a new service you can run:
 
 The behavior is similar to `cleon entity`.
 
+### Argument Guard
+
+There is one small thing that should be mentioned - Cleon::ArGuard class that provides some way of guarding arguments of entities and services against wrong values.
+
+The simple example is
+
+```ruby
+GuardString = ArGuard.new('string', 'must be String',
+  Proc.new{|v| v.is_a?(String)})
+
+arg = GuardString.("s")
+#  => 's'
+arg = GuardString.(1)
+# => ArgumentError: :arg must be String
+arg = GuardString.(1, 'name')
+# => ArgumentError: :name must be String
+arg = GuardString.(1, 'name', 'should be String')
+# => ArgumentError: :name should be String
+```
+
 ### Generating whole domains
 
 If you like everything above, maybe [Dogen](https://github.com/nvoynov/dogen) could be your next step. `Dogen` develops Cleon's ideas and proposes a model for describing domains, a DSL for creating such models, and a generator for creating a Ruby skeleton of such models along the way of Cleon.
