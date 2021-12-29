@@ -20,6 +20,7 @@ module Cleon
     def clone_cleon(path = Dir.pwd)
       error!(ERR_GEM_REQUIRED) unless gem?(path)
       error!(ERR_CLEON_CLONED) if cleon_gem?(path)
+      puts "Cleon: clone myself..."
       log = Cleon::Services::CloneCleon.(path)
       thor = File.join(Cleon.root, 'lib/cleon.thor')
       FileUtils.cp(thor, path)
@@ -35,6 +36,7 @@ module Cleon
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
     def clone_entity(thing, path = Dir.pwd)
       error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
+      puts "Cleon: clone entity..."
       log = Cleon::Services::CloneThing.(type: 'entity', thing: thing, path: path)
       print_log(log)
     end
@@ -42,6 +44,7 @@ module Cleon
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
     def clone_service(thing, path = Dir.pwd)
       error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
+      puts "Cleon: clone service..."
       log = Cleon::Services::CloneThing.(type: 'service', thing: thing, path: path)
       print_log(log)
     end

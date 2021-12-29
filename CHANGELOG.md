@@ -1,8 +1,7 @@
 ## [Unreleased]
 
-- exe with `cleon init` command
+- exe with `cleon clone`, `cleon service`, `cleon entity`, command
 - suppress \n in require file
-- README
 - version
 - release v0.3
 

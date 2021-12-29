@@ -3,23 +3,39 @@
 require "bundler/setup"
 require "cleon"
 
-usage = <<~EOF
+USAGE = <<~EOF
   -= Cleon =- is a code skeleton of services and entities
   For more information visit https://github.com/nvoynov/cleon
 
   To clone cleon skeleton inside your gem:
   1. add `gem "cleon"` to your Gemfile
   2. run `$ cleon clone`
+
+  COMMANDS
+    cleon clone\t clones Cleon's concepts
+    cleon service\t clones a new service
+    cleon entity\t clones a new entity
 EOF
 
-cmd = ARGV.shift
-unless cmd && cmd.downcase == 'clone'
-  puts usage
+COMMAND = %w(clone service entity)
+args = ARGV.map(&:downcase)
+cmnd = args.shift
+unless cmnd
+  puts USAGE
   exit
 end
 
 begin
-  Cleon.clone_cleon(Dir.pwd)
+  case cmnd
+  when 'clone'
+    Cleon.clone_cleon(Dir.pwd)
+  when 'service'
+    Cleon.clone_service(args)
+  when 'entityh'
+    Cleon.clone_entity(args)
+  else
+    puts USAGE
+  end
 rescue Cleon::Error => e
   puts e.message
 end
