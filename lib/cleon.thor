@@ -14,15 +14,13 @@ class CleonCLI < Thor
        'clone Cleon service with NAME and parameters'
   def service(name, *args)
     say "Cleon: clone service..."
-    log = Cleon.clone_service(args.unshift(name).join(' '))
-    log.each{|l| puts "    created #{l}" }
+    Cleon.clone_service(args.unshift(name).join(' '))
   end
 
   desc 'entity NAME [PARAM PARAM ..]',
        'clone Cleon entity with NAME and parameters'
   def entity(name, *args)
     say "Cleon: clone entity..."
-    log = Cleon.clone_entity(args.unshift(name).join(' '))
-    log.each{|l| puts "    created #{l}" }
+    Cleon.clone_entity(args.unshift(name).join(' '))    
   end
 end

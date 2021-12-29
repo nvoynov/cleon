@@ -1,28 +1,107 @@
-[![.github/workflows/main.yml](https://github.com/nvoynov/cleon/actions/workflows/main.yml/badge.svg)](https://github.com/nvoynov/cleon/actions/workflows/main.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/3395dba8f5c833532331/maintainability)](https://codeclimate.com/github/nvoynov/cleon/maintainability)
+[![Gem Version](https://badge.fury.io/rb/cleon.svg)](https://badge.fury.io/rb/cleon) [![.github/workflows/main.yml](https://github.com/nvoynov/cleon/actions/workflows/main.yml/badge.svg)](https://github.com/nvoynov/cleon/actions/workflows/main.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/3395dba8f5c833532331/maintainability)](https://codeclimate.com/github/nvoynov/cleon/maintainability)
 
 # Cleon
 
-`Cleon` a set of basic classes for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. Just entities, services (from DDD serves for interactors or use cases), and gateways at the moment.
+`Cleon` a set of basic PORO abstractions for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. Just entities, services (interactors or use cases), and gateways at the moment.
 
-
-
-You can check using those core concepts in demo gem [Users](https://github.com/nvoynov/cleon-users) that represents a simple but ubiquitous user management domain. And I'm also going to release demo gem with [Users API](__TODO__) that will provide interface to the domain.
-
-Once you'll become bothered by the cleanliness of your apps, just stop mingling business logic, frameworks, drivers; inspect those gems above and give it a try.
+You can check using those concepts in demo gem [Users](https://github.com/nvoynov/cleon-users) that represents a simple but ubiquitous user management domain.
 
 ## Installation
 
-The `Cleon` code is just Plain Old Ruby Objects and until I've shaped it into the gem, I was just copying this bunch of files manually from one project to another. I'm still thinking that it serves the best way. So, just install it as usual
+Add this line to your application's Gemfile:
 
-    $ gem install cleon
+```ruby
+gem 'cleon'
+```
+
+And then execute:
+
+    $ bundle install
 
 ## Usage
 
-Once you have started with a new gem that you want to be clean, just run the code in your console
+### Copying basic abstractions
 
-    $ ruby -e 'require "cleon"; Cleon.clone_cleon_code'
+Once you have started with a new gem, just run the code in your console to create source files for Cleon's abstractions:
 
-Perhaps I will add some kind of console command later, but at the moment the script above serves just right.
+    $ cleon clone
+
+It also will copy `cleon.thor` file into the root directory, so further you can install Thor and use just this file; or create your own Rake tasks.
+
+### Creating a new entity
+
+Once you need to create a new entity you can run:
+
+    $ ruby -e 'require "cleon"; Cleon.clone_entity "new_entity para1 para2"'
+
+or
+
+    $ thor cleon:entity new_entity para1 para2
+
+Let's create one and see the results
+
+```
+thor cleon:entity credentials email secret
+Cleon: clone entity...
+  created lib/dogen/entities/credentials.rb
+  created test/dogen/entities/credentials_spec.rb
+```
+
+lib/dogen/entities/credentials.rb
+
+```ruby
+require_relative 'entity'
+
+module Dogen
+  module Entities
+
+    class Credentials < Entity
+
+      attr_reader :email
+      attr_reader :secret
+
+      def initialize(email:, secret:)
+        @email = email
+        @secret = secret
+      end
+
+    end
+
+  end
+end
+```
+
+test/dogen/entities/credentials_spec.rb
+
+```ruby
+require_relative '../../spec_helper'
+include Dogen::Entities
+
+describe Credentials do
+
+  # let(:entity) { Credentials }.new(email:, secret:)
+
+  it 'must do something' do
+  end
+
+end
+```
+
+### Creating a new service
+
+Once you need to create a new service you can run:
+
+    $ ruby -e 'require "cleon"; Cleon.clone_service "service_name para1 para2"'
+
+or
+
+    $ thor cleon:entity service_name para1 para2
+
+The behavior is similar to `Cleon.clone_entity`.
+
+### Generating whole domains
+
+If you like everything above, maybe [Dogen](https://github.com/nvoynov/dogen) could be your next step. `Dogen` develops Cleon's ideas and proposes a model for describing domains, a DSL for creating such models, and a generator for creating a Ruby skeleton of such models along the way of Cleon.
 
 ## Story
 
