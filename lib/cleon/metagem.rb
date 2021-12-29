@@ -11,6 +11,10 @@ module Cleon
       @path = path
     end
 
+    def path
+      @path
+    end
+
     def gem?
       return false unless gemspec
       Dir.exist?(lib)

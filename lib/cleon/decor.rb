@@ -38,15 +38,18 @@ module Cleon
 
     # @return [String] :params presentation as method arguments
     def arguments
+      return '' if params.empty?
       params.join(', ')
     end
 
     # @return [String] :params presentation as method keywword arguments
     def keyword_arguments
+      return '' if params.empty?
       params.join(':, ') + ':'
     end
 
     def attributes
+      retrun '' if params.empty?
       params.map{|a| "attr_reader :#{a}"}.join(?\n) + "\n"
     end
   end

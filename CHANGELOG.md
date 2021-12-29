@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - exe with `cleon init` command
+- suppress \n in require file
 - README
 - version
 - release v0.3

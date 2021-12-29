@@ -11,12 +11,9 @@ describe Cleon do
   let(:thing){ 'thing para1 para2' }
 
   describe 'helpers dry-run' do
-    it 'must provide #copy_thor' do
-      SpecGem.(temp) { Cleon.copy_thor }
-    end
 
     it 'must provide #clone_cleon' do
-      SpecGem.(temp) { Cleon.clone_cleon }
+      SpecClone.(temp) { Cleon.clone_cleon }
     end
 
     it 'must provide #clone_service' do

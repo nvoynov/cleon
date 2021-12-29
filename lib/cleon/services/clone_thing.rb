@@ -30,8 +30,7 @@ module Cleon
         req = settings[:req_to] % {base: @meta.base}
         Generator.(@model, path: @path, erb: erb,
           place_to: put, require_to: req)
-        log << "'#{put}' created"
-        log << "'#{put}' required in '#{req}'"
+        log << put
 
         # create the thing's spec
         src = File.join(Cleon.root, settings[:spec][:erb_tt])
@@ -39,7 +38,7 @@ module Cleon
         put = settings[:spec][:put_to] % {base: @meta.base, name: @model.spec}
 
         Generator.(@model, path: @path, erb: erb, place_to: put)
-        log << "'#{put}' created"
+        log << put
 
         log
       end

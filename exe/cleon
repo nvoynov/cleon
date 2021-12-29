@@ -2,18 +2,16 @@
 
 require "bundler/setup"
 require "cleon"
-#
-# rpos = ARGV.index(">")
-# ARGV.pop(ARGV.length - rpos) unless rpos.nil?
-# Clerq::Cli.start(ARGV)
 
 usage = <<~EOF
   -= Cleon =- is a code skeleton of services and entities
-  To find out more look https://github.com/nvoynov/cleon
-  Run '$ cleon clone' for cloning cleon skeleton
+  For more information visit https://github.com/nvoynov/cleon
+
+  To clone cleon skeleton inside your gem:
+  1. add `gem "cleon"` to your Gemfile
+  2. run `$ cleon clone`
 EOF
 
-puts ARGV
 cmd = ARGV.shift
 unless cmd && cmd.downcase == 'clone'
   puts usage
@@ -21,8 +19,7 @@ unless cmd && cmd.downcase == 'clone'
 end
 
 begin
-  Cleon.clone_cleon(Dir.pwd) if command == 'clone'
-  puts usage unless command == 'clone'
+  Cleon.clone_cleon(Dir.pwd)
 rescue Cleon::Error => e
   puts e.message
 end

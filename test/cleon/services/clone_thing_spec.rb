@@ -14,7 +14,7 @@ describe CloneThing do
     it 'must create thing' do
       SpecGem.(root) do
         log = CloneThing.(type: type, thing: thing, path: Dir.pwd)
-        assert_equal 3, log.size
+        refute log.empty?
         assert File.exist?(src)
         assert File.exist?(spec)
         last_req = File.read(inc).split(?\n).last

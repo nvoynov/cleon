@@ -17,6 +17,7 @@ module Cleon
       end
 
       def call
+        @log = []
         create_structure
         generate_sources
         clone_sources
@@ -24,21 +25,23 @@ module Cleon
 
       private
 
-      def create_directories(base, dirs)
-        Dir.chdir(base) do
+      def create_structure
+        dirs = [
+          "#{@meta.path}/lib/#{@meta.base}/services",
+          "#{@meta.path}/lib/#{@meta.base}/entities",
+          "#{@meta.path}/lib/#{@meta.base}/gateways",
+          "#{@meta.path}/test/#{@meta.base}",
+          "#{@meta.path}/test/#{@meta.base}/services",
+          "#{@meta.path}/test/#{@meta.base}/entities",
+        ]
+
+        Dir.chdir(@meta.path) do
           dirs.each do |dir|
             next if Dir.exist?(dir)
             Dir.mkdir(dir)
-            puts "'#{dir}' directory created"
+            @log << dir
           end
         end
-      end
-
-      def create_structure
-        base_dirs = %w(entities services gateways)
-        test_dirs = [@meta.base, "#{@meta.base}/services", "#{@meta.base}/entities"]
-        create_directories(@meta.base_dir, base_dirs)
-        create_directories(@meta.test_dir, test_dirs)
       end
 
       def generate_sources
@@ -56,11 +59,13 @@ module Cleon
             template = File.join(dir, src)
             body = File.read(template) % {base: @meta.base, clone: @meta.const}
             dest = target.call(src)
+            log_file_name = "lib/#{@meta.base}/" + src.sub(/\.tt\z/, '')
             if File.exist?(dest)
               FileUtils.cp dest, "#{dest}~"
-              puts "Cleon replaced '#{dest}' that was stored as '#{dest}~'"
+              @log << "#{log_file_name}~"
             end
             File.write(dest, body)
+            @log << log_file_name
           end
         end
       end
@@ -74,6 +79,7 @@ module Cleon
             orig = File.read(path)
             body = orig.gsub(Cleon.name, @meta.const)
             File.write(src, body)
+            @log << src
           end
         end
       end

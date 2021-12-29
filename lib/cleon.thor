@@ -3,32 +3,26 @@ require 'thor'
 require 'cleon'
 
 class CleonCLI < Thor
+  include Thor::Actions
+  namespace :cleon
+
   def self.exit_on_failure?
     true
   end
 
-  # clone cleon structure to the gem folder at :path
-  desc 'clone [PATH]', 'Clones Cleon structure inside PATH'
-  def clone(path = Dir.pwd)
-    say "Cleon: clone myself..."
-    Cleon.clone_cleon(path)
-  end
-
   desc 'service NAME [PARAM PARAM ..]',
-       'clone a new Cleon service with NAME and parameters'
-  def service(*args)
+       'clone Cleon service with NAME and parameters'
+  def service(name, *args)
     say "Cleon: clone service..."
-    log = Cleon.clone_service(args.join(' '))
-    log.each{|l| puts "- #{l}" }
+    log = Cleon.clone_service(args.unshift(name).join(' '))
+    log.each{|l| puts "    created #{l}" }
   end
 
   desc 'entity NAME [PARAM PARAM ..]',
-       'clone a new Cleon entity with NAME and parameters'
-  def entity
+       'clone Cleon entity with NAME and parameters'
+  def entity(name, *args)
     say "Cleon: clone entity..."
-    Cleon.clone_entity(args.join(' '))
-    log.each{|l| puts "- #{l}" }
+    log = Cleon.clone_entity(args.unshift(name).join(' '))
+    log.each{|l| puts "    created #{l}" }
   end
 end
-
-CleonCLI.start
