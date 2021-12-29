@@ -2,6 +2,7 @@
 
 require_relative "spec_helper"
 
+# hands running exe/cleon specs; not sure it will work for github ruby build
 describe 'exe/cleon' do
 
   let(:banner) { /-= Cleon =- is a/ }
@@ -21,7 +22,7 @@ describe 'exe/cleon' do
   describe 'cleon clone' do
     it 'must clone cleon' do
       SpecClone.("exe") do
-        out, _ = capture_subprocess_io { system "cleon bla-bla-bla" }
+        out, _ = capture_subprocess_io { system "cleon clone" }
         refute_match banner, out
       end
     end

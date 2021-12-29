@@ -26,22 +26,16 @@ Once you have started with a new gem, just run the code in your console to creat
 
     $ cleon clone
 
-It also will copy `cleon.thor` file into the root directory, so further you can install Thor and use just this file; or create your own Rake tasks.
-
 ### Creating a new entity
 
 Once you need to create a new entity you can run:
 
-    $ ruby -e 'require "cleon"; Cleon.clone_entity "new_entity para1 para2"'
-
-or
-
-    $ thor cleon:entity new_entity para1 para2
+    $ cleon entity new_entity para1 para2
 
 Let's create one and see the results
 
 ```
-thor cleon:entity credentials email secret
+$ cleon entity credentials email secret
 Cleon: clone entity...
   created lib/dogen/entities/credentials.rb
   created test/dogen/entities/credentials_spec.rb
@@ -91,13 +85,9 @@ end
 
 Once you need to create a new service you can run:
 
-    $ ruby -e 'require "cleon"; Cleon.clone_service "service_name para1 para2"'
+    $ cleon service service_name para1 para2
 
-or
-
-    $ thor cleon:entity service_name para1 para2
-
-The behavior is similar to `Cleon.clone_entity`.
+The behavior is similar to `cleon entity`.
 
 ### Generating whole domains
 

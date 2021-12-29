@@ -22,9 +22,6 @@ module Cleon
       error!(ERR_CLEON_CLONED) if cleon_gem?(path)
       puts "Cleon: clone myself..."
       log = Cleon::Services::CloneCleon.(path)
-      thor = File.join(Cleon.root, 'lib/cleon.thor')
-      FileUtils.cp(thor, path)
-      log << 'cleon.thor'
       print_log(log)
       puts "Cleon was sucessfully cloned"
     end

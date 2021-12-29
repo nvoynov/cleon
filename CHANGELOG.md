@@ -1,14 +1,10 @@
 ## [Unreleased]
 
-- exe with `cleon clone`, `cleon service`, `cleon entity`, command
-- suppress \n in require file
-- version
-- release v0.3
-
 ## [0.3.0] - 2021-12-27
 
 - Added `Cleon::Services::CloneThing` service for generating services and entities. The service generates source `.rb` file and requires the source inside `entities.rb` or `services.rb` respectively; it also creates `_spec.rb`.
 - Added helpers `Cleon.copy_thor`,`Cleon.clone_cleon`, `Cleon.clone_entity`, `Cleon.clone_service`.
+- Added `exe/cleon` for cloning cleon, and cloning separate services and entities
 
 Templates for all those generators mentioned can be found in `lib/erb` directory. It also relies on the following gem structure:
 

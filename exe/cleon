@@ -3,7 +3,7 @@
 require "bundler/setup"
 require "cleon"
 
-USAGE = <<~EOF
+BANNER = <<~EOF
   -= Cleon =- is a code skeleton of services and entities
   For more information visit https://github.com/nvoynov/cleon
 
@@ -12,27 +12,32 @@ USAGE = <<~EOF
   2. run `$ cleon clone`
 
   COMMANDS
-    cleon clone\t clones Cleon's concepts
-    cleon service\t clones a new service
-    cleon entity\t clones a new entity
+    $ cleon clone
+    $ cleon service NAME [PARA1 PARA2]
+    $ cleon entity NAME [PARA1 PARA2]
 EOF
+
+def banner_and_exit
+  puts BANNER
+  exit
+end
 
 COMMAND = %w(clone service entity)
 args = ARGV.map(&:downcase)
 cmnd = args.shift
-unless cmnd
-  puts USAGE
-  exit
-end
+banner_and_exit unless cmnd
 
 begin
-  case cmnd
-  when 'clone'
+  if cmnd == 'clone'
     Cleon.clone_cleon(Dir.pwd)
+    exit
+  end
+  banner_and_exit if args.empty?
+  case cmnd
   when 'service'
-    Cleon.clone_service(args)
-  when 'entityh'
-    Cleon.clone_entity(args)
+    Cleon.clone_service(args.join(' '))
+  when 'entity'
+    Cleon.clone_entity(args.join(' '))
   else
     puts USAGE
   end
