@@ -3,10 +3,20 @@ include <%= @model.root_const %>::Services
 
 describe <%= @model.const %> do
 
+<% unless @model.params.empty? -%>
+  let(:params) { {<%= @model.keyword_arguments %>} }
+<% end -%>
+  let(:service) { <%= @model.const %> }
+
   describe '#call' do
-    it 'must do something' do
-      assert <%= @model.const %>.(<%= @model.keyword_arguments %>)
+    it 'must return guarded result' do
+      # @gateway = Minitest::Mock.new
+      # @gateway.expect(:<%= @model.name %>, nil, [String])
+      #
+      # <%= @model.root_const %>.stub :gateway, @gateway do
+      #   result = service.(**params)
+      #   assert GuardResult.(result), result
+      # end
     end
   end
-
 end

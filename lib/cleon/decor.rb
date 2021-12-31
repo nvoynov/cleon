@@ -42,6 +42,12 @@ module Cleon
       params.join(', ')
     end
 
+    # @return [String] :params presentation as method "at" - arguments
+    def at_arguments
+      return '' if params.empty?
+      params.map{|p| "@#{p}"}.join(', ')
+    end
+
     # @return [String] :params presentation as method keywword arguments
     def keyword_arguments
       return '' if params.empty?

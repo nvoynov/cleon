@@ -54,12 +54,14 @@ describe CloneCleon do
 
     it 'must clone Cleon sources to :path' do
       SpecClone.('cleon_clone') do
-        CloneCleon.()
-
-        # check structure
         meta = Cleon::MetaGem.new
-        Dir.chdir(meta.lib) { dirs.each {|dir| assert Dir.exist?(dir)} }
-        Dir.chdir(meta.base_dir) { srcs.each {|src| assert File.exist?(src)} }
+        _, _ = capture_io do
+          CloneCleon.()
+
+          # check structure
+          Dir.chdir(meta.lib) { dirs.each {|dir| assert Dir.exist?(dir)} }
+          Dir.chdir(meta.base_dir) { srcs.each {|src| assert File.exist?(src)} }
+        end
 
         # check compile
         Dir.chdir(meta.lib) do

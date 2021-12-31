@@ -2,46 +2,26 @@
 
 require "bundler/setup"
 require "cleon"
-
-BANNER = <<~EOF
-  -= Cleon =- is a code skeleton of services and entities
-  For more information visit https://github.com/nvoynov/cleon
-  version: #{Cleon::VERSION}
-
-  To clone cleon skeleton inside your gem:
-  1. add `gem "cleon"` to your Gemfile
-  2. run `$ cleon clone`
-
-  COMMANDS
-    $ cleon clone
-    $ cleon service NAME [PARA1 PARA2]
-    $ cleon entity NAME [PARA1 PARA2]
-EOF
-
-def banner_and_exit
-  puts BANNER
-  exit
-end
+extend Cleon::CLI
 
 COMMAND = %w(clone service entity)
 args = ARGV.map(&:downcase)
-cmnd = args.shift
-banner_and_exit unless cmnd
+banner if args.empty?
+command = args.shift
 
-begin
-  if cmnd == 'clone'
-    Cleon.clone_cleon(Dir.pwd)
-    exit
-  end
-  banner_and_exit if args.empty?
-  case cmnd
-  when 'service'
-    Cleon.clone_service(args.join(' '))
-  when 'entity'
-    Cleon.clone_entity(args.join(' '))
-  else
-    puts USAGE
-  end
-rescue Cleon::Error => e
-  puts e.message
+if command == 'clone'
+  clone(Dir.pwd)
+  exit
 end
+
+if command == 'entity'
+  entity(args.join(' '), Dir.pwd)
+  exit
+end
+
+if command == 'service'
+  service(args.join(' '), Dir.pwd)
+  exit
+end
+
+banner

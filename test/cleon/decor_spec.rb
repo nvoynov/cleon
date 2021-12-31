@@ -12,7 +12,6 @@ describe Decor do
     it 'must respond to :root' do
       assert_equal root, decor.root
     end
-
   end
 
   describe '#const' do
@@ -28,6 +27,12 @@ describe Decor do
   describe '#arguments' do
     it 'must return coma separated params' do
       assert_equal 'property1, property2, property3', decor.arguments
+    end
+  end
+
+  describe '#at_arguments' do
+    it 'must return coma separated params with "at"' do
+      assert_equal '@property1, @property2, @property3', decor.at_arguments
     end
   end
 

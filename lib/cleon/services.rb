@@ -1,3 +1,5 @@
 require_relative "services/service"
 require_relative "services/clone_cleon"
-require_relative "services/clone_thing"
+require_relative "services/clone_concept"
+require_relative "services/clone_service"
+require_relative "services/clone_entity"
