@@ -35,20 +35,18 @@ describe CloneCleon do
     let(:dirs) {
       [
         "#{cleon_clone}/services",
-        "#{cleon_clone}/entities",
-        "#{cleon_clone}/gateways"
+        "#{cleon_clone}/entities"
       ]
     }
     let(:srcs) {
       [
         'arguard.rb',
+        'gateway.rb',
         'arguards.rb',
         'services.rb',
         'entities.rb',
-        'gateways.rb',
         'services/service.rb',
-        'entities/entity.rb',
-        'gateways/gateway.rb'
+        'entities/entity.rb'
       ]
     }
 

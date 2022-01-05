@@ -30,7 +30,6 @@ module Cleon
         dirs = [
           "lib/#{@meta.base}/services",
           "lib/#{@meta.base}/entities",
-          "lib/#{@meta.base}/gateways",
           "test/#{@meta.base}",
           "test/#{@meta.base}/services",
           "test/#{@meta.base}/entities",
@@ -74,7 +73,7 @@ module Cleon
 
       # replaces Unit
       def clone_sources
-        sources = %w(services/service.rb entities/entity.rb gateways/gateway.rb)
+        sources = %w(services/service.rb entities/entity.rb)
         Dir.chdir(@meta.base_dir) do
           sources.each do |src|
             path = File.join(Cleon.root, 'lib', 'cleon', src)

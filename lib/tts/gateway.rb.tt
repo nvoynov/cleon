@@ -1,0 +1,10 @@
+require_relative "arguards"
+
+module %{clone}
+
+  # The %{clone} gateway interface
+  class Gateway
+    include %{clone}::ArGuards
+  end
+
+end

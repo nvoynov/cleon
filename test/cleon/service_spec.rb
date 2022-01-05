@@ -9,7 +9,7 @@ describe Service do
   end
 
   before do
-    Cleon.gateway = Cleon::Gateways::Gateway.new
+    Cleon.gateway = Cleon::Gateway.new
   end
 
   it 'must provide gateway' do

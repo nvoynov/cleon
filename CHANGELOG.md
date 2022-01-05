@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.1] - 2021-12-31
+
+- Only one Cleon::Gateway left. Therefore no 'gateways' folder, Cleon require only 'gateway'
+
 ## [0.4.0] - 2021-12-31
 
 - Added CLI interface

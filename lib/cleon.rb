@@ -2,10 +2,10 @@
 
 require_relative "cleon/version"
 require_relative "cleon/arguard"
+require_relative "cleon/gateway"
 require_relative "cleon/arguards"
 require_relative "cleon/entities"
 require_relative "cleon/services"
-require_relative "cleon/gateways"
 require_relative "cleon/metagem"
 require_relative "cleon/model"
 require_relative "cleon/decor"
@@ -26,7 +26,7 @@ module Cleon
 
     GuardGateway = Cleon::ArGuard.new(
       "gateway", "must be Cleon::Gateways::Gateway",
-      Proc.new {|v| v.is_a? Cleon::Gateways::Gateway})
+      Proc.new {|v| v.is_a? Cleon::Gateway})
 
     def gateway
       @gateway # ||= Cleon::Gateways::Gateway.new

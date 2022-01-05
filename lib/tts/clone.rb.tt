@@ -1,9 +1,9 @@
 require_relative '%{base}/version'
+require_relative '%{base}/gateway'
 require_relative '%{base}/arguard'
 require_relative '%{base}/arguards'
 require_relative '%{base}/entities'
 require_relative '%{base}/services'
-require_relative '%{base}/gateways'
 
 module %{clone}
   class Error < StandardError; end
@@ -14,11 +14,11 @@ module %{clone}
     end
 
     GuardGateway = %{clone}::ArGuard.new(
-      "gateway", "must be %{clone}::Gateways::Gateway",
-      Proc.new {|v| v.is_a? %{clone}::Gateways::Gateway})
+      "gateway", "must be %{clone}::Gateway",
+      Proc.new {|v| v.is_a? %{clone}::Gateway})
 
     def gateway
-      @gateway # ||= %{clone}::Gateways::Gateway.new
+      @gateway # ||= %{clone}::Gateway.new
     end
 
     def gateway=(gateway)
