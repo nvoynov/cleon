@@ -2,10 +2,8 @@ require_relative "../spec_helper"
 include Cleon::Services
 
 describe Service do
-  class SpecService < Cleon::Services::Service
-    def self.service
-      new
-    end
+  class SpecService < Service
+    public_class_method :new
   end
 
   before do
@@ -13,7 +11,7 @@ describe Service do
   end
 
   it 'must provide gateway' do
-    assert_respond_to SpecService.service, :gateway
+    assert_respond_to SpecService.new, :gateway
   end
 
 end

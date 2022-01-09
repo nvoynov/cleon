@@ -12,9 +12,9 @@ module Cleon
         {
           code_erb: "#{Cleon.root}/lib/erb/entity.rb.erb",
           spec_erb: "#{Cleon.root}/lib/erb/entity_spec.rb.erb",
-          code_dir: "lib/#{@meta.base}/entities",
-          spec_dir: "test/#{@meta.base}/entities",
-          include: "lib/#{@meta.base}/entities.rb"
+          code_dir: "lib/#{@home.base}/entities",
+          spec_dir: "test/#{@home.base}/entities",
+          include: "lib/#{@home.base}/entities.rb"
         }
       end
     end

@@ -16,9 +16,11 @@ module Cleon
       constanize(name)
     end
 
-    def root_const
-      constanize(root)
-    end
+    alias :root_const :root
+
+    # def root_const
+    #   constanize(root)
+    # end
 
     def source
       "#{sanitize(name)}.rb"
@@ -39,24 +41,24 @@ module Cleon
     # @return [String] :params presentation as method arguments
     def arguments
       return '' if params.empty?
-      params.join(', ')
+      params.map(&:name).join(', ')
     end
 
     # @return [String] :params presentation as method "at" - arguments
     def at_arguments
       return '' if params.empty?
-      params.map{|p| "@#{p}"}.join(', ')
+      params.map(&:name).map{|p| "@#{p}"}.join(', ')
     end
 
     # @return [String] :params presentation as method keywword arguments
     def keyword_arguments
       return '' if params.empty?
-      params.join(':, ') + ':'
+      params.map(&:name).join(':, ') + ':'
     end
 
     def attributes
       retrun '' if params.empty?
-      params.map{|a| "attr_reader :#{a}"}.join(?\n) + "\n"
+      params.map(&:name).map{|a| "attr_reader :#{a}"}.join(?\n) + "\n"
     end
   end
 

@@ -1,4 +1,8 @@
 require_relative '../spec_helper'
+require_relative 'services/shared_clone'
+require_relative 'services/shared_guard'
+require_relative 'services/shared_service'
+require_relative 'services/shared_entity'
 include Cleon
 
 describe CLI do
@@ -13,121 +17,96 @@ describe CLI do
   end
 
   describe 'clone' do
-    it 'must error when not a gem' do
-      SpecTmp.() do
-        out, _ = capture_io { CLI.clone }
-        assert_match CLI::ERR_GEM_REQUIRED, out
+    include SharedClone
+
+    let(:cleon_clone) { 'cleon_clone' }
+
+    it 'must error when folder exist' do
+      capture_subprocess_io do
+        SpecTemp.() do
+          Dir.mkdir(cleon_clone)
+          out, _ = capture_io { CLI.clone(cleon_clone) }
+          assert_match CLI::DIR_EXIST, out
+        end
       end
     end
-
-    it 'must error when already cloned' do
-      SpecTmp.() do
-        # out, err = capture_io { CLI.clone }
-        out, _ = capture_io {
-          CLI.clone
-          CLI.clone
-        }
-        assert CLI::ERR_CLEON_CLONED, out.lines.last
-      end
-    end
-
-    let(:clone_output) {
-      <<~EOF
-        Clone myself...
-          created lib/clone/entities
-          created lib/clone/services
-          created lib/clone/gateways
-          created test/clone
-          created test/clone/services
-          created test/clone/entities
-          created lib/clone/arguard.rb
-          created lib/clone/arguards.rb
-          created lib/clone.rb~
-          created lib/clone.rb
-          created lib/clone/entities.rb
-          created lib/clone/gateways.rb
-          created lib/clone/services.rb
-          created lib/clone/services/service.rb
-          created lib/clone/entities/entity.rb
-          created lib/clone/gateways/gateway.rb
-        Cleon was successfully cloned
-      EOF
-    }
 
     it 'must clone' do
-      SpecClone.('clone') do
-        out, _ = capture_io { CLI.clone }
-        assert clone_output, out
+      capture_subprocess_io do
+        SpecTemp.() do
+          log = nil
+          out, _ = capture_io { log = CLI.clone(cleon_clone) }
+          check_result(log)
+          # TODO: check out
+        end
       end
     end
   end
 
-  let(:temp) { 'temp' }
-  let(:thing){ 'thing para1 para2' }
+  let(:arguard) { 'string' }
+
+  describe 'guard' do
+    include SharedGuard
+
+    let(:cleon_clone) { 'cleon_clone' }
+    let(:arguard) { 'integer' }
+
+    it 'must clone guard' do
+      capture_subprocess_io do
+        SpecCleon.(cleon_clone) do
+          log = CLI.arguard(arguard)
+          check_result(log)
+        end
+      end
+    end
+  end
 
   describe 'service' do
-    let(:output) {
-      <<~EOF
-        Clone entity...
-          created lib/clone/services/thing.rb
-          created lib/clone/services.rb~
-          created lib/clone/services.rb
-          created test/clone/services/thing_spec.rb
-      EOF
-    }
+    include SharedService
+
+    let(:cleon_clone) { 'cleon_clone' }
+    let(:service) { 'something' }
+    let(:model) { "#{service} para1 para2:string" }
 
     it 'must error when not a gem' do
-      SpecClone.('clone') do
-        out, _ = capture_io { CLI.service(thing) }
-        assert CLI::ERR_GEM_REQUIRED, out
+      SpecTemp.() do
+        out, _ = capture_io { CLI.service(model) }
+        assert CLI::CLEON_REQ, out
       end
     end
 
-    it 'must error when not cleoned' do
-      skip 'need SpecGem not cleoned'
-    end
-
     it 'must clone servive' do
-      SpecClone.('clone') do
-        out, _ = capture_io {
-          CLI.clone
-          CLI.service(thing)
-        }
-        assert output, out
+      capture_subprocess_io do
+        SpecCleon.(cleon_clone) do
+          log = nil
+          out, _ = capture_io { log = CLI.service(model) }
+          check_result(log)
+        end
       end
     end
   end
 
   describe 'entity' do
-    let(:output) {
-      <<~EOF
-        Clone entity...
-          created lib/clone/entities/thing.rb
-          created lib/clone/entities.rb~
-          created lib/clone/entities.rb
-          created test/clone/entities/thing_spec.rb
-      EOF
-    }
+    include SharedEntity
+
+    let(:cleon_clone) { 'cleon_clone' }
+    let(:entity) { 'something' }
+    let(:model) { "#{entity} para1 para2:string" }
 
     it 'must error when not a gem' do
-      SpecClone.('clone') do
-        out, _ = capture_io { CLI.entity(thing) }
-        assert CLI::ERR_GEM_REQUIRED, out
+      SpecTemp.() do
+        out, _ = capture_io { CLI.entity(model) }
+        assert CLI::CLEON_REQ, out
       end
     end
 
-    it 'must error when not cleoned' do
-      skip 'need SpecGem not cleoned'
-    end
-
     it 'must clone entity' do
-      SpecClone.('clone') do
-        out, _ = capture_io {
-          CLI.clone
-          CLI.entity(thing)
-        }
-        # puts out
-        assert output, out
+      capture_subprocess_io do
+        SpecCleon.(cleon_clone) do
+          log = nil
+          out, _ = capture_io { log = CLI.entity(model) }
+          check_result(log)
+        end
       end
     end
   end

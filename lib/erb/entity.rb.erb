@@ -4,14 +4,22 @@ module <%= @model.root_const %>
   module Entities
 
     class <%= @model.const %> < Entity
-
-<% for param in @model.params -%>
-      attr_reader :<%= param %>
+<% for param in @model.params %>
+<% if param.guard -%>
+      # @return [<%= param.guard.capitalize %>] <%= param.name %>
+<% else -%>
+      # @return [Unspecified] <%= param.name %>
+<% end -%>
+      attr_reader :<%= param.name %>
 <% end -%>
 
       def initialize(<%= @model.keyword_arguments %>)
 <% for param in @model.params -%>
-        @<%= param %> = <%= param %>
+<% if param.guard -%>
+        @<%= param.name %> = Guard<%= param.guard.capitalize %>.(<%= param.name %>)
+<% else -%>
+        @<%= param.name %> = <%= param.name %>
+<% end -%>
 <% end -%>
       end
 

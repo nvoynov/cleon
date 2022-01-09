@@ -1,20 +1,19 @@
 require_relative "service"
 require_relative "../model"
 require_relative "../decor"
+require_relative "../home"
 
 module Cleon
   module Services
 
-    GuardModel = Cleon::ArGuard.new('model', 'must be Model',
-      Proc.new {|v| v.is_a?(Model) })
-
     # Clone one concept
     class CloneConcept < Service
-      def initialize(model:, path:)
-        @meta = MetaGem.new(path)
-        @path = path
+      # @param model [String] 'thing para para:guard'
+      def initialize(model)
+        @home = Home.new
+        Cleon.error!("It cannot be done outside a Cleon's gem") unless @home.home?
         @thing = Model.new(model.split(' '))
-        @model = Decor.new(@thing, @meta.const)
+        @model = Decor.new(@thing, @home.const)
       end
 
       def call
@@ -36,17 +35,16 @@ module Cleon
         incl = name.sub(/.rb\z/, '')
         prfx = include =~ /services/ ? 'services' : 'entities'
         excerpt = "require_relative '#{prfx}/#{incl}'"
-        body = File.read(File.join(@path, include)) + "\n#{excerpt}"
+        body = File.read(include) + "\n#{excerpt}"
         write_file(include, body)
       end
 
       def write_file(name, content)
-        filename = File.join(@path, name)
-        if File.exist?(filename)
-          FileUtils.cp filename, filename + '~'
+        if File.exist?(name)
+          FileUtils.cp name, name + '~'
           @log << name + '~'
         end
-        File.write(filename, content)
+        File.write(name, content)
         @log << name
       end
 

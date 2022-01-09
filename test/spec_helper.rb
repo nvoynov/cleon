@@ -7,8 +7,10 @@ $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "cleon"
 require "minitest/autorun"
 
-# jsut inside temp
-class SpecTmp
+include Cleon
+
+class SpecTemp
+  # Execute block inside temp folder
   def self.call
     Dir.mktmpdir(['cleon']) do |dir|
       Dir.chdir(dir) { yield }
@@ -16,45 +18,12 @@ class SpecTmp
   end
 end
 
-# just inside gem candidate to clone
-class SpecClone
+class SpecCleon
+  # execute block inside new Cleon's clone :root
   def self.call(root)
-    SpecTmp.() do
-      dirs = ['lib', "lib/#{root}", 'test']
-      files = ["#{root}.gemspec", "lib/#{root}.rb", "lib/#{root}/version.rb"]
-      dirs.each{|dir| Dir.mkdir(dir) }
-      files.each{|src| File.write(src, '') }
-      yield
-    end
-  end
-end
-
-class SpecGem
-  def self.call(root, print_glob = false)
-    SpecTmp.() do
-      dirs = ['lib',
-        "lib/#{root}",
-        "lib/#{root}/services",
-        "lib/#{root}/entities",
-        "test",
-        "test/#{root}",
-        "test/#{root}/services",
-        "test/#{root}/entities"
-      ]
-
-      files = [
-        "#{root}.gemspec",
-        "lib/#{root}.rb",
-        "lib/#{root}/entities.rb",
-        "lib/#{root}/services.rb"
-      ]
-
-      dirs.each{|dir| Dir.mkdir(dir) }
-      files.each{|src| File.write(src, '')}
-
-      pp Dir.glob('**/*') if print_glob
-
-      yield
+    SpecTemp.() do
+      Cleon::Services::CloneCleon.(root)
+      Dir.chdir(root) { yield }
     end
   end
 end

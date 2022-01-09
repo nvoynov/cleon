@@ -8,3 +8,4 @@
 /tmp/
 /test/sandbox*.rb
 /test/cleon_clone/
+/*.rb

@@ -1,6 +1,6 @@
 require 'fileutils'
 require_relative 'service'
-require_relative '../metagem'
+require_relative '../home'
 
 module Cleon
   module Services
@@ -9,40 +9,22 @@ module Cleon
     #   changing the original Cleon name to the target gem name.
     class CloneCleon < Service
 
-      def initialize(path = Dir.pwd)
-        path = File.expand_path(path)
-        @meta = MetaGem.new(path)
-        Cleon.error!("Unknown path #{path}") unless Dir.exist?(path)
-        Cleon.error!("Unknown gem: #{path}") unless @meta.gem?
+      # @param name [String] a gem name suitable for 'bundle gem NAME'
+      def initialize(name)
+        @home = Home.new(name)
       end
 
       def call
-        @log = []
-        create_structure
+        Cleon.error! "Canceled. Cannot clone to an existing folder" if @home.exist?
+
+        @log = @home.bundle
         generate_sources
         clone_sources
+        # end
         @log
       end
 
       private
-
-      def create_structure
-        dirs = [
-          "lib/#{@meta.base}/services",
-          "lib/#{@meta.base}/entities",
-          "test/#{@meta.base}",
-          "test/#{@meta.base}/services",
-          "test/#{@meta.base}/entities",
-        ]
-
-        Dir.chdir(@meta.path) do
-          dirs.each do |dir|
-            next if Dir.exist?(dir)
-            Dir.mkdir(dir)
-            @log << dir
-          end
-        end
-      end
 
       def generate_sources
         dir = File.join(Cleon.root, 'lib', 'tts')
@@ -50,37 +32,35 @@ module Cleon
         # all files instead of 'clone.rb.tt' must be placed to 'lib/base'
         # 'clone.rb.tt' must be placed to 'lib'
         target = ->(source) {
-          return File.join(@meta.lib, @meta.source) if source =~ /clone\.rb\.tt/
-          File.join(@meta.base_dir, source.sub(/\.tt\z/, ''))
+          return File.join(@home.lib, @home.source) if source =~ /clone\.rb\.tt/
+          File.join(@home.base_dir, source.sub(/\.tt\z/, ''))
         }
 
-        Dir.chdir(@meta.lib) do
-          tts.each do |src|
-            template = File.join(dir, src)
-            body = File.read(template) % {base: @meta.base, clone: @meta.const}
-            dest = target.call(src)
-            log_file_name = "lib/#{@meta.base}/" + src.sub(/\.tt\z/, '')
-            log_file_name = "lib/#{@meta.base}.rb" if log_file_name =~ /clone.rb/
-            if File.exist?(dest)
-              FileUtils.cp dest, "#{dest}~"
-              @log << "#{log_file_name}~"
-            end
-            File.write(dest, body)
-            @log << log_file_name
+        tts.each do |src|
+          template = File.join(dir, src)
+          body = File.read(template) % {base: @home.base, clone: @home.const}
+          dest = target.call(src)
+          log_file_name = "lib/#{@home.base}/" + src.sub(/\.tt\z/, '')
+          log_file_name = "lib/#{@home.base}.rb" if log_file_name =~ /clone.rb/
+          if File.exist?(dest)
+            FileUtils.cp dest, "#{dest}~"
+            @log << "#{log_file_name}~"
           end
+          File.write(dest, body)
+          @log << log_file_name
         end
       end
 
       # replaces Unit
       def clone_sources
         sources = %w(services/service.rb entities/entity.rb)
-        Dir.chdir(@meta.base_dir) do
+        Dir.chdir(@home.base_dir) do
           sources.each do |src|
             path = File.join(Cleon.root, 'lib', 'cleon', src)
             orig = File.read(path)
-            body = orig.gsub(Cleon.name, @meta.const)
+            body = orig.gsub(Cleon.name, @home.const)
             File.write(src, body)
-            @log << "lib/#{@meta.base}/#{src}"
+            @log << "lib/#{@home.base}/#{src}"
           end
         end
       end

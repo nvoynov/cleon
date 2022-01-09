@@ -6,9 +6,10 @@ require_relative "cleon/gateway"
 require_relative "cleon/arguards"
 require_relative "cleon/entities"
 require_relative "cleon/services"
-require_relative "cleon/metagem"
+require_relative "cleon/explorer"
 require_relative "cleon/model"
 require_relative "cleon/decor"
+require_relative "cleon/home"
 require_relative "cleon/cli"
 
 module Cleon

@@ -7,7 +7,11 @@ module <%= @model.root_const %>
 
       def initialize(<%= @model.keyword_arguments %>)
 <% for param in @model.params -%>
-        @<%= param %> = <%= param %>
+<% if param.guard -%>
+        @<%= param.name %> = Guard<%= param.guard.capitalize %>.(<%= param.name %>)
+<% else -%>
+        @<%= param.name %> = <%= param.name %>
+<% end -%>
 <% end -%>
       end
 

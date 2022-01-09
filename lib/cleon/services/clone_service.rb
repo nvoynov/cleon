@@ -11,25 +11,13 @@ module Cleon
       def config
         {
           code_erb: "#{Cleon.root}/lib/erb/service.rb.erb",
-          code_dir: "lib/#{@meta.base}/services",
+          code_dir: "lib/#{@home.base}/services",
           spec_erb: "#{Cleon.root}/lib/erb/service_spec.rb.erb",
-          spec_dir: "test/#{@meta.base}/services",
-          include: "lib/#{@meta.base}/services.rb"
+          spec_dir: "test/#{@home.base}/services",
+          include: "lib/#{@home.base}/services.rb"
         }
       end
     end
-        #
-        # {
-
-        # }
-        # cfg[:entity] = {
-        #   code_erb: "#{Dogen.root}/lib/erb/entity.rb.erb",
-        #   code_dir: "lib/#{@meta.base}/entities",
-        #   spec_erb: "#{Dogen.root}/lib/erb/entity_spec.rb.erb",
-        #   spec_dir: "test/#{@meta.base}/entities",
-        #   include: "lib/#{@meta.base}/entities.rb"
-        # }
-        # }
 
   end
 end

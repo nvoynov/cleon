@@ -1,57 +1,77 @@
 require_relative 'version'
+require_relative 'services'
+require_relative 'home'
+include Cleon::Services
 
 module Cleon
   module CLI
     extend self
 
     # Helper for CloneCleon.() (see Cleon::Services::CloneCleon.new)
-    def clone(path = Dir.pwd)
+    def clone(name)
+      log = []
       guard_stderr do
-        Cleon.error!(ERR_GEM_REQUIRED) unless gem?(path)
-        Cleon.error!(ERR_CLEON_CLONED) if cleon_gem?(path)
+        not_exist!(name.downcase)
         puts "Clone myself..."
-        log = Cleon::Services::CloneCleon.(path)
+        log = CloneCleon.(name)
         print_log(log)
       end
       puts "Cleon was successfully cloned"
+      log
+    end
+
+    # Helper for Cleon::Services::CloneGuard.()
+    def arguard(name)
+      log = []
+      guard_stderr do
+        inside_home!
+        puts "Clone arguard..."
+        log = CloneGuard.(name.downcase)
+        print_log(log)
+      end
+      log
     end
 
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
-    def entity(model, path = Dir.pwd)
+    def entity(model)
+      log = []
       guard_stderr do
-        Cleon.error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
+        inside_home!
         puts "Clone entity..."
-        log = Cleon::Services::CloneEntity.(model: model, path: path)
+        log = CloneEntity.(model)
         print_log(log)
       end
+      log
     end
 
     # Helper for CloneThing.() (see Cleon::Services::CloneThing.new)
-    def service(model, path = Dir.pwd)
+    def service(model)
+      log = []
       guard_stderr do
-        Cleon.error!(ERR_CLEON_REQUIRED) unless cleon_gem?(path)
+        inside_home!
         puts "Clone entity..."
-        log = Cleon::Services::CloneService.(model: model, path: path)
+        log = CloneService.(model)
         print_log(log)
       end
+      log
     end
 
     def banner
       puts BANNER
     end
 
-    ERR_GEM_REQUIRED = 'This command only works inside a gem'
-    ERR_CLEON_REQUIRED = 'This command only works inside a "cleoned" gem'
-    ERR_CLEON_CLONED = 'This gem is already "cleoned"'
+    DIR_EXIST = 'Cannot clone Cleon into an existing folder'
+    CLEON_REQ = 'Cannot clone outside of Cleon\'s gem'
+    GEM_REQ   = 'Cannot clone outside a gem'
 
     private
 
-    def gem?(path)
-      MetaGem.new(path).gem?
+    def not_exist!(dir)
+      Cleon.error!(DIR_EXIST) if Dir.exist?(dir)
     end
 
-    def cleon_gem?(path)
-      MetaGem.new(path).cleon_gem?
+    def inside_home!
+      Cleon.error!(CLEON_REQ) unless Cleon::Home.new.home?
     end
 
     def print_log(log)
@@ -70,13 +90,15 @@ module Cleon
       home: https://github.com/nvoynov/cleon
 
       Quickstart:
-        1. gem "cleon"
-        2. $ cleon clone
+        1. gem "cleon" when your work with Bundler
+        2. $ cleon
 
       Commands:
-        $ cleon clone
+        $ cleon CLONE
+        $ cleon arguard NAME
         $ cleon service NAME [PARA1 PARA2]
         $ cleon entity NAME [PARA1 PARA2]
+        $ cleon port CLEON PORT_TO
     EOF
   end
 end

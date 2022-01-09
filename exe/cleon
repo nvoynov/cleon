@@ -4,23 +4,37 @@ require "bundler/setup"
 require "cleon"
 extend Cleon::CLI
 
-COMMAND = %w(clone service entity)
 args = ARGV.map(&:downcase)
-banner if args.empty?
+if args.empty?
+  banner
+  exit
+end
+
 command = args.shift
 
-if command == 'clone'
-  clone(Dir.pwd)
+if command == 'arguard'
+  arguard(args.join(' '))
   exit
 end
 
 if command == 'entity'
-  entity(args.join(' '), Dir.pwd)
+  entity(args.join(' '))
   exit
 end
 
 if command == 'service'
-  service(args.join(' '), Dir.pwd)
+  service(args.join(' '))
+  exit
+end
+
+if command == 'port'
+  puts "UNDER CONSTRUCTION"
+  # port(args.shift, args.shift)
+  exit
+end
+
+if command && !command.empty?
+  clone(command)
   exit
 end
 
