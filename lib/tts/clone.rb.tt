@@ -1,6 +1,6 @@
 require_relative '%{base}/version'
+require_relative '%{base}/basics'
 require_relative '%{base}/gateway'
-require_relative '%{base}/arguard'
 require_relative '%{base}/arguards'
 require_relative '%{base}/entities'
 require_relative '%{base}/services'

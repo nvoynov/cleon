@@ -89,6 +89,7 @@ module Cleon
 
     def dirs
       [ "lib/#{base}",
+        "lib/#{base}/basics",
         "lib/#{base}/services",
         "lib/#{base}/entities",
         "test/#{base}",

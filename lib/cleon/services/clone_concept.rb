@@ -1,7 +1,7 @@
-require_relative "service"
-require_relative "../model"
-require_relative "../decor"
-require_relative "../home"
+require_relative '../basics/service'
+require_relative '../model'
+require_relative '../decor'
+require_relative '../home'
 
 module Cleon
   module Services

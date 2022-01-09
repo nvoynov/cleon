@@ -1,5 +1,5 @@
 require 'fileutils'
-require_relative 'service'
+require_relative '../basics/service'
 require_relative '../home'
 
 module Cleon
@@ -53,7 +53,7 @@ module Cleon
 
       # replaces Unit
       def clone_sources
-        sources = %w(services/service.rb entities/entity.rb)
+        sources = %w(basics/arguard.rb basics/service.rb basics/entity.rb)
         Dir.chdir(@home.base_dir) do
           sources.each do |src|
             path = File.join(Cleon.root, 'lib', 'cleon', src)

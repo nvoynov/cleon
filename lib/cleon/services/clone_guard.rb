@@ -1,4 +1,4 @@
-require_relative "clone_concept"
+require_relative 'clone_concept'
 
 module Cleon
   module Services

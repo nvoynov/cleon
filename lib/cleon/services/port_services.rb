@@ -1,5 +1,5 @@
-require_relative "service"
-require_relative "../explorer"
+require_relative '../basics/service'
+require_relative '../explorer'
 
 module Cleon
   module Services

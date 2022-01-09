@@ -7,7 +7,7 @@ module %{clone}
   #    GuardString = ArGuard.new('string', 'must be String'
   #      Proc.new{|v| v.is_a?(String)})
   #
-  #    # guarding construtor arguments
+  #    # guard initialize arguments
   #    class Entity
   #      def initialize(arg)
   #        @arg = GuardString.(arg)

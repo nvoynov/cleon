@@ -1,4 +1,4 @@
-require_relative 'arguard'
+require_relative 'basics/arguard'
 module Cleon
 
   GuardStringArray = Cleon::ArGuard.new('args', 'must be Array<String>',
