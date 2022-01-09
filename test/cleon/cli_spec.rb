@@ -35,7 +35,7 @@ describe CLI do
       capture_subprocess_io do
         SpecTemp.() do
           log = nil
-          out, _ = capture_io { log = CLI.clone(cleon_clone) }
+          _, _ = capture_io { log = CLI.clone(cleon_clone) }
           check_result(log)
           # TODO: check out
         end
@@ -79,7 +79,7 @@ describe CLI do
       capture_subprocess_io do
         SpecCleon.(cleon_clone) do
           log = nil
-          out, _ = capture_io { log = CLI.service(model) }
+          _, _ = capture_io { log = CLI.service(model) }
           check_result(log)
         end
       end
@@ -104,7 +104,7 @@ describe CLI do
       capture_subprocess_io do
         SpecCleon.(cleon_clone) do
           log = nil
-          out, _ = capture_io { log = CLI.entity(model) }
+          _, _ = capture_io { log = CLI.entity(model) }
           check_result(log)
         end
       end

@@ -27,3 +27,22 @@ class SpecCleon
     end
   end
 end
+
+class SpecCleonExe
+  # execute block inside new Cleon's clone :root
+  def self.call(root)
+    SpecTemp.() do
+      Cleon::Services::CloneCleon.(root)
+      Dir.chdir(root) {
+        # bundler required well formed gemspec
+        # does not work!
+        File.delete(Home.new.gemspec)
+        File.delete("Gemfile")
+        # gemfile = File.read("Gemfile")
+        # File.write("Gemfile", gemfile + ?\n + 'gem "cleon"')
+        # system "bundle update"
+        yield
+      }
+    end
+  end
+end

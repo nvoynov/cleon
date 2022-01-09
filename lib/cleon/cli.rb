@@ -12,11 +12,11 @@ module Cleon
       log = []
       guard_stderr do
         not_exist!(name.downcase)
-        puts "Clone myself..."
+        puts "Clone myself to '#{name}'..."
         log = CloneCleon.(name)
         print_log(log)
       end
-      puts "Cleon was successfully cloned"
+      puts "Cleon was cloned successfully"
       log
     end
 
@@ -25,10 +25,11 @@ module Cleon
       log = []
       guard_stderr do
         inside_home!
-        puts "Clone arguard..."
+        puts "Create arguard '#{name}'..."
         log = CloneGuard.(name.downcase)
         print_log(log)
       end
+      puts "ArGuard was created successfully"
       log
     end
 
@@ -37,7 +38,7 @@ module Cleon
       log = []
       guard_stderr do
         inside_home!
-        puts "Clone entity..."
+        puts "Create entity..."
         log = CloneEntity.(model)
         print_log(log)
       end
@@ -49,7 +50,7 @@ module Cleon
       log = []
       guard_stderr do
         inside_home!
-        puts "Clone entity..."
+        puts "Create service..."
         log = CloneService.(model)
         print_log(log)
       end

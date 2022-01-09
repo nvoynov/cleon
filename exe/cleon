@@ -13,6 +13,7 @@ end
 command = args.shift
 
 if command == 'arguard'
+  puts "debug>>arguard"
   arguard(args.join(' '))
   exit
 end

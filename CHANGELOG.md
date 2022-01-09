@@ -4,7 +4,6 @@ TODO
 
 - Change cloned gem structure by moving all the basics (ArGuard, Entity, Service) into `basics` folder
 - Added new `cleon ports CLEON PLACE_TO` command. It checks if it called inside just some gem; then gets all services from Cleon's clone `CLEON` and creates and require ports for those.
-- `cleon arguard` pust `Write me :spec in arguards.rb line: 25`
 
 ## [0.5.0] - 2022-01-09
 

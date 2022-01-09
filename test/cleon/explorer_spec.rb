@@ -9,9 +9,9 @@ describe Explorer do
   end
 
   describe 'call' do
-    # TODO: create a Cleon's gem, generate few services, install 
+    # TODO: create a Cleon's gem, generate few services, install
     it 'must return services' do
-      pp Explorer.('users')
+      # pp Explorer.('users')
     end
   end
 end
