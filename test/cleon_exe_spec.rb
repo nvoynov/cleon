@@ -51,6 +51,14 @@ describe 'exe/cleon' do
       assert_match %r{Create entity}, out
     end
 
+    it 'must provide port' do
+      out, _ = capture_subprocess_io do
+        SpecCleonExe.('temp') { system "cleon port users ports" }
+      end
+      # puts out
+      assert_match %r{UNDER CONSTRUCTION}, out
+    end
+
   end
 
 end

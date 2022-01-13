@@ -9,9 +9,14 @@ describe Explorer do
   end
 
   describe 'call' do
-    # TODO: create a Cleon's gem, generate few services, install
+
     it 'must return services' do
-      # pp Explorer.('users')
+      Explorer.('users').each do |deco|
+        # puts "\n--- #{deco.name}"
+        puts deco.lib_helper_method
+        puts "\n"
+        # puts deco.api_helper_method
+      end
     end
   end
 end

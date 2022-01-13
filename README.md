@@ -2,9 +2,25 @@
 
 # Cleon
 
-`Cleon` a set of basic PORO abstractions for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. Just entities, services (interactors or use cases), and gateways at the moment.
+```
+-= Cleon v0.5.0 =- Clean Code Skeleton
+home: https://github.com/nvoynov/cleon
 
-You can check using those concepts in demo gem [Users](https://github.com/nvoynov/cleon-users) that represents a simple but ubiquitous user management domain.
+Quickstart:
+  1. gem "cleon" when your work with Bundler
+  2. $ cleon
+
+Commands:
+  $ cleon CLONE
+  $ cleon arguard NAME
+  $ cleon service NAME [PARA1 PARA2]
+  $ cleon entity NAME [PARA1 PARA2]
+  $ cleon port CLEON PORT_TO
+```
+
+`Cleon` a set of basic PORO abstractions for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. You may also check [User Stories](/user_stories.md).
+
+You can check using those concepts in the [Users](https://github.com/nvoynov/cleon-users) demo gem that represents a simple but ubiquitous user management domain.
 
 ## Installation
 
@@ -20,43 +36,142 @@ And then execute:
 
 ## Usage
 
-### Copying basic abstractions
+### Create the skeleton
 
-Once you have started with a new gem, just run the code in your console to create source files for Cleon's abstractions:
+Once you have decided to start a new ruby project for problem domain, you can start with creating a new gem and cloning Cleon skeleton to the gem. The following command exec `bundle gem CLONE` and then clone Cleon's code to the new generated gem; the `CLONE` parameter stands for the name of your new gem.
 
-    $ cleon clone
+    $ cleon CLONE
 
-One of test of cloning shows output that follows. The root source file of the gem `lib/temp.rb` was replaced during cloning, but original copy was saved in `lib/temp.rb~`
+Hope, the output of the command is clear
 
 ```
-$ cleon clone
-Cleon: clone myself...
-  created lib/temp/services
-  created lib/temp/entities
-  created lib/temp/gateways
-  created test/temp
-  created test/temp/services
-  created test/temp/entities
-  created lib/temp/arguard.rb
-  created lib/temp/arguards.rb
-  created lib/temp.rb~
-  created lib/temp.rb
-  created lib/temp/entities.rb
-  created lib/temp/gateways.rb
-  created lib/temp/services.rb
-  created lib/temp/services/service.rb
-  created lib/temp/entities/entity.rb
-  created lib/temp/gateways/gateway.rb
-Cleon was successfully cloned
+$ cleon demo
+Clone myself to 'demo'...
+Creating gem 'demo'...
+# skipped bundler output
+  created lib/demo/basics
+  created lib/demo/services
+  created lib/demo/entities
+  created test/demo
+  created test/demo/services
+  created test/demo/entities
+  created lib/demo/arguards.rb
+  created lib/demo/basics.rb
+  created lib/demo.rb~
+  created lib/demo.rb
+  created lib/demo/entities.rb
+  created lib/demo/gateway.rb
+  created lib/demo/services.rb
+  created lib/demo/basics/arguard.rb
+  created lib/demo/basics/service.rb
+  created lib/demo/basics/entity.rb
+Cleon was cloned successfully
 ```    
 
-### Creating a new entity
+You need to fix `demo.gemspec` and then you can generate basic concepts. I know it's boring, but for me placing it to gem is important part.
 
-Once you need to create a new entity you can run:
+### Creating a new arguard
+
+I was brooding over adding some more advanced type system but finished with just simple as possible argument guard that just check and return value it if meets the guard spec.
+
+The simple example of using guards is
+
+```ruby
+GuardString = ArGuard.new('string', 'must be String',
+  Proc.new{|v| v.is_a?(String)})
+
+arg = GuardString.("s")
+#  => 's'
+arg = GuardString.(1)
+# => ArgumentError: :string must be String
+arg = GuardString.(1, 'name')
+# => ArgumentError: :name must be String
+arg = GuardString.(1, 'name', 'should be String')
+# => ArgumentError: :name should be String
+```
+
+To create a new guard just run the following command:
+
+    $ cleon arguard string
+
+That will create a blank for the guard and its test. The output demonstrates a general behavior of Cleon's generators. It generates source and source_spec, backup previous version of the source when it already exit in sources tree.
+
+```
+$ cleon arguard string
+Create arguard 'string'...
+  created lib/demo/arguards.rb~
+  created lib/demo/arguards.rb
+  created test/demo/arguards_spec.rb
+  created test/demo/arguards_spec.rb~
+  created test/demo/arguards_spec.rb
+ArGuard was created successfully
+```
+arguards.rb
+
+```ruby
+require_relative 'basics/arguard'
+
+module Demo
+  # Place here shared argument guards for the domain
+  module ArGuards
+
+    GuardString = Demo::ArGuard.new(
+      'string', 'must be String',
+      Proc.new {|v|
+        raise "provide spec for GuardString file: #{__FILE__} line: #{__LINE__}"})
+
+  end
+end
+```
+
+arguards_spec.rb
+
+```ruby
+require_relative '../spec_helper'
+include Demo::ArGuards
+
+module SharedGuardSpecs
+  extend Minitest::Spec::DSL
+
+  # spec must provided the following variables:
+  #   let(:guard) { GuardName }
+  #   let(:valid) { ["name", :name] }
+  #   let(:wrong) { [nil, 1, Object.new]}
+
+  it 'must return value' do
+    valid.each{|v| assert_equal v, guard.(v)}
+  end
+
+  it 'must raise ArgumentError' do
+    wrong.each{|w| assert_raises(ArgumentError) { guard.(w) }}
+  end
+end
+
+describe GuardString do
+  include SharedGuardSpecs
+
+  let(:guard) { GuardString }
+  let(:valid) { [nil, -1, 0, 1, "", "str", Object.new] }
+  let(:wrong) { [nil, -1, 0, 1, "", "str", Object.new] }
+end
+```
+
+### Creating a new service
+
+Once you need a new entity you can run the following generator:
 
     $ cleon entity new_entity para1 para2
 
-Let's create one and see the results
+The output
+
+
+### Creating a new entity
+
+Once you need a new entity you can run the following generator:
+
+    $ cleon entity new_entity para1 para2
+
+The output
 
 ```
 $ cleon entity credentials email secret

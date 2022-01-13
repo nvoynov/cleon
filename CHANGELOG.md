@@ -1,12 +1,15 @@
 ## [Unreleased]
 
-TODO
+TODO:
 
-- Change cloned gem structure by moving all the basics (ArGuard, Entity, Service) into `basics` folder
-- Added new `cleon ports CLEON PLACE_TO` command. It checks if it called inside just some gem; then gets all services from Cleon's clone `CLEON` and creates and require ports for those.
+- `cleon port api/lib CLEON PLACE_TO` command. It checks if it called inside just some gem. Then it creates service ports for all the services of Cleon's clone `CLEON` and the main source for the face. The main source file include helpers for calling `CLEON` services through service ports.
+- `cleon clean` command to clean source code tree from `*.rb~`
+- `cleon stats` command to show source code statistics like how many concepts created, modified manually, untouched; saving stats history for the date of the command and comparing today stats with historical data. It will require banner with MD5(generated code)
+- recreate safely; if generated file exists, Cleon checks if the file was changed manually (based on MD5) and just replace when content was not changed. When generated content changed, Cleon always create `*.rb~` backup file. Check for duplication in requiring such files more just one time.
 
 ## [0.5.0] - 2022-01-09
 
+- Changes structure; `arguard.rb`, `service.rb`, and `entity.rb` moved into `basics` directory
 - Removed `cleon clone` and replaced by `cleon CLONE`. Now it creates a new Cleon's gem named `CLONE` and populate it by Cleon's folders and files. Before cloning it ensures that there is no `CLONE` directory exist in the working directory. Your `CLONE` cannot be `arguard`, `service`, `entity`, or `port`.
 - Added new `cleon guard NAME` command that checks if it called inside Cleon's gem and creates a new guard inside `{base}::ArGuards`.
 - Improved `cleon service` and `cleon entity`. Now these checks if it called inside Cleon's gem, creates a new thing and require it. Its also accepts typed parameters `param:type` and guards such typed arguments in initialize.

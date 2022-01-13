@@ -23,6 +23,16 @@ module Cleon
       end
 
       def call
+        # TODO: create service_port template
+        # TODO: check ports folder
+        #       - create when not exist
+        #       - fail when exist
+        # TODO: clone service_port, in basics or @place_to?
+        # TODO: create service_port descendant for each service in @get_from
+        # TODO: create require_relative '@place_to/port_descendant'
+        # TODO: create demo library class
+        #       that accepts the same parameters as target service
+        #       that just call appropriate port_descendant 
         bundle = Cleon::Explorer.(@get_from)
         bundle.each do |bu|
           bu[:service]

@@ -9,6 +9,7 @@ require_relative 'cleon/services'
 require_relative 'cleon/explorer'
 require_relative 'cleon/model'
 require_relative 'cleon/decor'
+require_relative 'cleon/port_decor'
 require_relative 'cleon/home'
 require_relative 'cleon/cli'
 
