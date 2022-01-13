@@ -158,105 +158,100 @@ end
 
 ### Creating a new service
 
-Once you need a new entity you can run the following generator:
+Once you need a new service you can run the following generator:
 
-    $ cleon entity new_entity para1 para2
+    $ cleon service SERVICE [PARAM1] [PRAM2]
 
-The output
-
-
-### Creating a new entity
-
-Once you need a new entity you can run the following generator:
-
-    $ cleon entity new_entity para1 para2
-
-The output
+The output will be
 
 ```
-$ cleon entity credentials email secret
-Cleon: clone entity...
-  created lib/dogen/entities/credentials.rb
-  created test/dogen/entities/credentials_spec.rb
+cleon service authenticate email secret
+Create service...
+  created lib/demo/services/authenticate.rb
+  created lib/demo/services.rb~
+  created lib/demo/services.rb
+  created test/demo/services/authenticate_spec.rb
 ```
 
-lib/dogen/entities/credentials.rb
+the "authenticate.rb" content
 
 ```ruby
-require_relative 'entity'
+require_relative '../basics/service'
 
-module Dogen
-  module Entities
-
-    class Credentials < Entity
-
-      attr_reader :email
-      attr_reader :secret
-
+module Demo
+  module Services
+    class Authenticate < Service
       def initialize(email:, secret:)
         @email = email
         @secret = secret
       end
 
+      def call
+        # gateway.authenticate(@email, @secret)
+      end
     end
-
   end
 end
 ```
 
-test/dogen/entities/credentials_spec.rb
+the "authenticate_spec.rb" source
 
 ```ruby
 require_relative '../../spec_helper'
-include Dogen::Entities
+include Demo::Services
 
-describe Credentials do
+describe Authenticate do
 
-  # let(:entity) { Credentials }.new(email:, secret:)
+  let(:params) { {email:, secret:} }
+  let(:service) { Authenticate }
 
-  it 'must do something' do
+  describe '#call' do
+    it 'must return guarded result' do
+      # @gateway = Minitest::Mock.new
+      # @gateway.expect(:authenticate, nil, [String])
+      #
+      # Demo.stub :gateway, @gateway do
+      #   result = service.(**params)
+      #   assert GuardResult.(result), result
+      # end
+    end
   end
-
 end
 ```
 
-### Creating a new service
+You can also enforce your service with argument guards.
 
-Once you need to create a new service you can run:
+    $ cleon service authenticate email:email secret:secret
 
-    $ cleon service service_name para1 para2
-
-The behavior is similar to `cleon entity`.
-
-### Argument Guard
-
-There is one small thing that should be mentioned - Cleon::ArGuard class that provides some way of guarding arguments of entities and services against wrong values.
-
-The simple example is
+Then generated service source will guard the service arguments:
 
 ```ruby
-GuardString = ArGuard.new('string', 'must be String',
-  Proc.new{|v| v.is_a?(String)})
-
-arg = GuardString.("s")
-#  => 's'
-arg = GuardString.(1)
-# => ArgumentError: :arg must be String
-arg = GuardString.(1, 'name')
-# => ArgumentError: :name must be String
-arg = GuardString.(1, 'name', 'should be String')
-# => ArgumentError: :name should be String
+class Authenticate < Service
+  def initialize(email:, secret:)
+    @email = GuardEmail.(email)
+    @secret = GuardSecret.(secret)
+  end
+  # skipped ..
+end
 ```
+
+### Creating a new entity
+
+Once you need a new entity you can run the following:
+
+    $ cleon entity ENTITY [PARA1] [PARA2]
+
+The behavior is the same as for service generator
 
 ### Generating whole domains
 
-If you like everything above, maybe [Dogen](https://github.com/nvoynov/dogen) could be your next step. `Dogen` develops Cleon's ideas and proposes a model for describing domains, a DSL for creating such models, and a generator for creating a Ruby skeleton of such models along the way of Cleon.
+If you like everything above, maybe [Dogen](https://github.com/nvoynov/dogen) could be your next step. `Dogen` provides a model for describing domains, a DSL for creating such models, and the domain generator that creates whole domain skeleton with guars, services and entities in the Cleon's way.
 
 ## Story
 
-A few last weeks I was goofing around, some reading, encapsulating domain business logic in separate gems. Finally, I caught myself copying and polishing basic classes from one project to another and that is why I created the gem.
+Once I caught myself copying and polishing basic classes from one project to another and then following DRY principle I just created the gem for this purpose. Somewhere in those time I had seen "The Foundation" series and chose the name after Cleon, because of his boring perpetuated constancy.
 
-I had seen recently "The Foundation" series and chose the name taken after Cleon, because of his boring perpetuated constancy.
+The first version actually jsust cloned the cleon's source files directly from this gem to another location, and changing the name of the main gem module after. But then I created Dogen and migrated here generoators.
 
 ## Development
 
