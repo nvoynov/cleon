@@ -2,6 +2,8 @@
 
 # Cleon
 
+`Cleon` a set of basic PORO abstractions for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. You may also check [User Stories](/user_stories.md).
+
 ```
 -= Cleon v0.5.0 =- Clean Code Skeleton
 home: https://github.com/nvoynov/cleon
@@ -18,8 +20,6 @@ Commands:
   $ cleon port CLEON PORT_TO
 ```
 
-`Cleon` a set of basic PORO abstractions for building clean systems. If you are familiar with [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), you'll catch everything at a glance. If not I doubted it serves to you. You may also check [User Stories](/user_stories.md).
-
 You can check using those concepts in the [Users](https://github.com/nvoynov/cleon-users) demo gem that represents a simple but ubiquitous user management domain.
 
 ## Installation
@@ -35,6 +35,12 @@ And then execute:
     $ bundle install
 
 ## Usage
+
+The first and foremost purpose of the Cleon is to provide a clean project skeleton. But once you have cloned the skeleton it forces you to follow Cleon's way during development. It is going to be mainly the creation of services and entities based on basic abstractions through creating and requiring source files mainly and that is quite boring.
+
+To eliminate the source files routine, Cleon provides code generators for services, entities, and their tests. The generated sources have some commented code inside that reflects my current vision of how it will be utilized during development.
+
+For instance, the most common way the service works is to request some data from the gateway, process it somehow, and then return the result of the processing; to test services at this stage of development, I am going to mock and stub the data gateway methods. All such suppositions are placed in the comments of generated services code.
 
 ### Create the skeleton
 
@@ -80,14 +86,10 @@ The simple example of using guards is
 GuardString = ArGuard.new('string', 'must be String',
   Proc.new{|v| v.is_a?(String)})
 
-arg = GuardString.("s")
-#  => 's'
-arg = GuardString.(1)
-# => ArgumentError: :string must be String
-arg = GuardString.(1, 'name')
-# => ArgumentError: :name must be String
-arg = GuardString.(1, 'name', 'should be String')
-# => ArgumentError: :name should be String
+arg = GuardString.("s") #  => 's'
+arg = GuardString.(1)   # => ArgumentError: :string must be String
+arg = GuardString.(1, 'name') # => ArgumentError: :name must be String
+arg = GuardString.(1, 'name', 'should be String') # => ArgumentError: :name should be String
 ```
 
 To create a new guard just run the following command:
@@ -115,10 +117,8 @@ module Demo
   # Place here shared argument guards for the domain
   module ArGuards
 
-    GuardString = Demo::ArGuard.new(
-      'string', 'must be String',
-      Proc.new {|v|
-        raise "provide spec for GuardString file: #{__FILE__} line: #{__LINE__}"})
+    GuardString = Demo::ArGuard.new('string', 'must be String',
+      Proc.new {|v| raise "provide spec for GuardString file: #{__FILE__} line: #{__LINE__}"})
 
   end
 end
@@ -246,6 +246,8 @@ The behavior is the same as for service generator
 ### Generating whole domains
 
 If you like everything above, maybe [Dogen](https://github.com/nvoynov/dogen) could be your next step. `Dogen` provides a model for describing domains, a DSL for creating such models, and the domain generator that creates whole domain skeleton with guars, services and entities in the Cleon's way.
+
+As the simplest case, you can just place a few Cleon's calls in a command-line scenario.
 
 ## Story
 
