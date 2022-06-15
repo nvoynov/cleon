@@ -253,7 +253,7 @@ As the simplest case, you can just place a few Cleon's calls in a command-line s
 
 Once I caught myself copying and polishing basic classes from one project to another and then following DRY principle I just created the gem for this purpose. Somewhere in those time I had seen "The Foundation" series and chose the name after Cleon, because of his boring perpetuated constancy.
 
-The first version actually jsust cloned the cleon's source files directly from this gem to another location, and changing the name of the main gem module after. But then I created Dogen and migrated here generoators.
+The first version actually just cloned the Cleon's source files directly from this gem to another location, and changing the name of the main gem module after. But then I created Dogen and migrated here generators.
 
 ## Development
 

@@ -7,6 +7,12 @@ TODO:
 - `cleon stats` command to show source code statistics like how many concepts created, modified manually, untouched; saving stats history for the date of the command and comparing today stats with historical data. It will require banner with MD5(generated code)
 - recreate safely; if generated file exists, Cleon checks if the file was changed manually (based on MD5) and just replace when content was not changed. When generated content changed, Cleon always create `*.rb~` backup file. Check for duplication in requiring such files more just one time.
 
+Changes:
+
+- Changed requiring `spec_helper.rb` to `test_helper.rb` in tests
+- Fixed entity spec template `# let(:entity) { Entity }.new(arg1:, arg2:)` to  `let(:entity) { Entity.new(arg1:, arg2:) }`
+
+
 ## [0.5.0] - 2022-01-09
 
 - Changes structure; `arguard.rb`, `service.rb`, and `entity.rb` moved into `basics` directory
